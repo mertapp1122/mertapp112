@@ -1025,27 +1025,28 @@
             const typingId = showTyping();
             
             try {
-                // For now, simulate Mert's response since Firebase Functions aren't deployed yet
-                setTimeout(() => {
-                    hideTyping(typingId);
-                    
-                    // Simulated Mert responses
-                    const responses = [
-                        "Merhaba! That's a fascinating question. As someone who worked on GPT-4 optimization at OpenAI, I've seen how these models can surprise even their creators. What specific aspect interests you most?",
-                        "İnşallah, we'll see amazing developments in AI safety in the coming years. At Yapay Zeka Labs, we're working on making AI more aligned with human values. Have you thought about the ethical implications?",
-                        "That reminds me of a conversation I had with Sam Altman back in San Francisco. The Turkish tech scene is really growing too - Istanbul has some incredible AI startups now. Are you involved in tech yourself?",
-                        "Great point! In my experience, both at OpenAI and now running my own company, the key is balancing innovation with responsibility. What challenges are you facing in your work?",
-                        "Exactly! The transformer architecture really changed everything. When we were optimizing GPT-4, we discovered so many interesting patterns. Would you like to dive deeper into the technical details?"
-                    ];
-                    
-                    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-                    addMessage('assistant', randomResponse);
-                }, 2000);
+                // Call Firebase Function for real AI chat
+                const chatFunction = firebase.functions().httpsCallable('chat');
+                const result = await chatFunction({ message: message });
+                
+                hideTyping(typingId);
+                addMessage('assistant', result.data.response);
                 
             } catch (error) {
                 console.error('Chat error:', error);
                 hideTyping(typingId);
-                addMessage('assistant', 'Sorry, I encountered an error. Please try again.');
+                
+                // Show helpful error message
+                let errorMessage = 'Sorry, I encountered an error. ';
+                if (error.code === 'unauthenticated') {
+                    errorMessage = 'Please sign in to continue chatting.';
+                } else if (error.code === 'resource-exhausted') {
+                    errorMessage = 'Rate limit reached. Please wait a moment before sending another message.';
+                } else {
+                    errorMessage += 'Please try again in a moment.';
+                }
+                
+                addMessage('assistant', errorMessage);
             }
         }
 

@@ -6,9 +6,9 @@ const OpenAI = require('openai');
 admin.initializeApp();
 const db = admin.firestore();
 
-// Initialize OpenAI with your API key
+// Initialize OpenAI with API key from environment
 const openai = new OpenAI({
-  apiKey: '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'
+  apiKey: process.env.OPENAI_API_KEY
 });
 
 // Mert's system prompt

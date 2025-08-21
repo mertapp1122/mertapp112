@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPT-5 - The Next Generation of AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.7;
+            color: #1a1a1a;
+            background: #fefefe;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Subtle paper texture background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.02;
+            z-index: -1;
+            background-image: 
+                radial-gradient(circle at 1px 1px, rgba(0,0,0,.15) 1px, transparent 0);
+            background-size: 20px 20px;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 80px 40px;
+        }
+
+        .hero {
+            margin-bottom: 80px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 300;
+            letter-spacing: -0.02em;
+            margin-bottom: 20px;
+            color: #111;
+        }
+
+        .hero .subtitle {
+            font-size: 1.3rem;
+            color: #666;
+            font-weight: 300;
+            margin-bottom: 40px;
+        }
+
+        .hero .description {
+            font-size: 1.1rem;
+            color: #444;
+            margin-bottom: 60px;
+            max-width: 600px;
+        }
+
+        .navigation {
+            margin-bottom: 100px;
+        }
+
+        .nav-heading {
+            display: inline-block;
+            font-size: 1.4rem;
+            font-weight: 400;
+            color: #111;
+            text-decoration: underline;
+            text-decoration-color: #111;
+            text-underline-offset: 8px;
+            text-decoration-thickness: 1px;
+            cursor: pointer;
+            margin-bottom: 30px;
+            margin-right: 40px;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .nav-heading:hover {
+            animation: flicker 0.6s ease-in-out;
+        }
+
+        @keyframes flicker {
+            0%, 100% { 
+                background-color: transparent;
+                color: #111;
+            }
+            25%, 75% { 
+                background-color: #111;
+                color: #fefefe;
+                text-decoration-color: #111;
+            }
+            50% { 
+                background-color: transparent;
+                color: #111;
+            }
+        }
+
+        .section {
+            margin-bottom: 80px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .section.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            font-weight: 500;
+            margin-bottom: 30px;
+            color: #111;
+        }
+
+        .section h3 {
+            font-size: 1.3rem;
+            font-weight: 500;
+            margin-bottom: 20px;
+            margin-top: 40px;
+            color: #222;
+        }
+
+        .section p {
+            font-size: 1rem;
+            margin-bottom: 20px;
+            color: #444;
+        }
+
+        .capabilities-grid {
+            display: grid;
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .capability-item {
+            border-left: 2px solid #e0e0e0;
+            padding-left: 20px;
+        }
+
+        .capability-item h4 {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 10px;
+            color: #111;
+        }
+
+        .capability-item p {
+            color: #555;
+            font-size: 0.95rem;
+        }
+
+        .demo-highlight {
+            background: linear-gradient(135deg, #f8f9fa 0%, #f1f3f4 100%);
+            border-left: 3px solid #111;
+            padding: 30px;
+            margin: 40px 0;
+            font-style: italic;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: #111;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .company-info {
+            border-top: 1px solid #e0e0e0;
+            padding-top: 60px;
+            margin-top: 80px;
+        }
+
+        .founders-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .founder {
+            background: #f8f9fa;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        /* Smooth scroll behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 60px 20px;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .nav-heading {
+                display: block;
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+            
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="hero">
+            <h1>GPT-5</h1>
+            <div class="subtitle">The Most Advanced AI Model Ever Created</div>
+            <div class="description">
+                OpenAI's GPT-5 represents a quantum leap in artificial intelligence, combining unprecedented reasoning capabilities with lightning-fast performance. Launched in August 2025, it's not just an upgrade—it's a complete reimagining of what AI can achieve.
+            </div>
+        </div>
+
+        <nav class="navigation">
+            <div class="nav-heading" data-target="capabilities">Core Capabilities</div>
+            <div class="nav-heading" data-target="demos">Live Demonstrations</div>
+            <div class="nav-heading" data-target="performance">Performance Metrics</div>
+            <div class="nav-heading" data-target="company">About OpenAI</div>
+        </nav>
+
+        <section id="capabilities" class="section">
+            <h2>Revolutionary Capabilities</h2>
+            <p>GPT-5 isn't just smarter—it thinks. With built-in reasoning capabilities and unprecedented performance across every domain, it represents the closest we've come to artificial general intelligence.</p>
+            
+            <div class="capabilities-grid">
+                <div class="capability-item">
+                    <h4>Advanced Reasoning</h4>
+                    <p>GPT-5 includes a built-in routing system that decides when to answer instantly and when to think in steps, delivering profound responses at astonishing speed.</p>
+                </div>
+                
+                <div class="capability-item">
+                    <h4>Superior Coding</h4>
+                    <p>Achieving 74.9% on SWE-bench Verified and 88% on Aider Polyglot, GPT-5 can create complex web applications and games in minutes, not hours.</p>
+                </div>
+                
+                <div class="capability-item">
+                    <h4>Mathematical Excellence</h4>
+                    <p>Scoring 94.6% on AIME 2025 without tools, GPT-5 demonstrates PhD-level mathematical reasoning and problem-solving capabilities.</p>
+                </div>
+                
+                <div class="capability-item">
+                    <h4>Multimodal Understanding</h4>
+                    <p>With 84.2% performance on MMMU, GPT-5 seamlessly processes text, images, and complex visual information with human-level comprehension.</p>
+                </div>
+                
+                <div class="capability-item">
+                    <h4>Reduced Hallucinations</h4>
+                    <p>45% less likely to contain factual errors than GPT-4o, and when thinking, 80% less likely to hallucinate than OpenAI o3.</p>
+                </div>
+                
+                <div class="capability-item">
+                    <h4>Natural Interaction</h4>
+                    <p>Less effusively agreeable, fewer unnecessary emojis, more subtle and thoughtful—like chatting with a helpful friend with PhD-level intelligence.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="demos" class="section">
+            <h2>Live Demonstrations</h2>
+            <p>During OpenAI's August 7, 2025 livestream, GPT-5 showcased abilities that would have been unimaginable just months ago.</p>
+            
+            <div class="demo-highlight">
+                <p><strong>French Learning App:</strong> In just 14 seconds of thinking, GPT-5 generated hundreds of lines of code to create a complete French learning web app with flashcards, quizzes, and interactive games—work that would typically take a software developer several hours.</p>
+            </div>
+            
+            <h3>Key Demonstrations</h3>
+            <div class="capabilities-grid">
+                <div class="capability-item">
+                    <h4>Instant Web Development</h4>
+                    <p>Created a fully functional "French Playground" web app with interactive elements, clean UI design, and educational games in under 5 minutes.</p>
+                </div>
+                
+                <div class="capability-item">
+                    <h4>Game Creation</h4>
+                    <p>Built simple but engaging games including a castle environment with NPCs you can chat with while trying to pop balloons, complete with sound effects.</p>
+                </div>
+                
+                <div class="capability-item">
+                    <h4>UI/UX Excellence</h4>
+                    <p>Designed clean, functional interfaces in React and Tailwind, understanding aesthetic principles with minimal prompting.</p>
+                </div>
+            </div>
+            
+            <div class="demo-highlight">
+                <p><strong>CEO Sam Altman's Take:</strong> "The speed of GPT-5 is psychologically disorienting; so fast it makes you question whether it's thinking at all. It just knows when to think. It delivers profound responses at astonishing speed."</p>
+            </div>
+        </section>
+
+        <section id="performance" class="section">
+            <h2>Performance Metrics</h2>
+            <p>GPT-5's performance represents breakthrough achievements across every measurable domain, setting new standards for AI capability.</p>
+            
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-number">94.6%</span>
+                    <span class="stat-label">AIME 2025 Mathematics</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">74.9%</span>
+                    <span class="stat-label">SWE-bench Verified</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">88%</span>
+                    <span class="stat-label">Aider Polyglot Coding</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">84.2%</span>
+                    <span class="stat-label">MMMU Multimodal</span>
+                </div>
+            </div>
+            
+            <h3>Efficiency Breakthrough</h3>
+            <p>GPT-5 with thinking performs better than OpenAI o3 with 50-80% fewer output tokens across all capabilities, including visual reasoning, agentic coding, and graduate-level scientific problem solving.</p>
+            
+            <h3>Pricing Innovation</h3>
+            <p>With aggressively competitive pricing at $1.25/million for input and $10/million for output, GPT-5 makes advanced AI accessible to developers and organizations of all sizes.</p>
+        </section>
+
+        <section id="company" class="section company-info">
+            <h2>About OpenAI</h2>
+            <p>Founded in December 2015, OpenAI has evolved from a visionary non-profit into the world's leading artificial intelligence organization, driving the ongoing AI revolution with groundbreaking models like ChatGPT, DALL-E, and now GPT-5.</p>
+            
+            <h3>Mission & Vision</h3>
+            <p>OpenAI's mission is to ensure that artificial general intelligence (AGI)—AI systems that are generally smarter than humans—benefits all of humanity. Their primary fiduciary duty is to humanity itself.</p>
+            
+            <h3>Leadership & Founders</h3>
+            <p>Led by CEO Sam Altman and Co-Founder & President Greg Brockman, OpenAI was founded by a consortium of visionary researchers and entrepreneurs:</p>
+            
+            <div class="founders-list">
+                <span class="founder">Sam Altman</span>
+                <span class="founder">Greg Brockman</span>
+                <span class="founder">Ilya Sutskever</span>
+                <span class="founder">John Schulman</span>
+                <span class="founder">Andrej Karpathy</span>
+                <span class="founder">Wojciech Zaremba</span>
+                <span class="founder">Durk Kingma</span>
+                <span class="founder">Trevor Blackwell</span>
+                <span class="founder">Pamela Vagata</span>
+                <span class="founder">Vicki Cheung</span>
+            </div>
+            
+            <h3>2025 Evolution</h3>
+            <p>As OpenAI enters 2025, the organization is transforming from a lab and startup into an enduring company. They're evolving their structure into a Delaware Public Benefit Corporation while maintaining their core mission to build safe AGI that benefits humanity.</p>
+            
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-number">$57.9B</span>
+                    <span class="stat-label">Total Funding Raised</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">280</span>
+                    <span class="stat-label">Team Members</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">2015</span>
+                    <span class="stat-label">Founded</span>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navHeadings = document.querySelectorAll('.nav-heading');
+            const sections = document.querySelectorAll('.section');
+            
+            // Navigation click handlers
+            navHeadings.forEach(heading => {
+                heading.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Add click animation
+                    this.style.transform = 'scale(0.95)';
+                    this.style.transition = 'transform 0.1s ease';
+                    
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)';
+                        this.style.transition = 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                    }, 100);
+                    
+                    // Scroll to target section
+                    const targetId = this.getAttribute('data-target');
+                    const targetSection = document.getElementById(targetId);
+                    
+                    if (targetSection) {
+                        targetSection.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+            
+            // Intersection Observer for section animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, observerOptions);
+            
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+            
+            // Initialize first section
+            if (sections.length > 0) {
+                sections[0].classList.add('active');
+            }
+        });
+    </script>
+</body>
+</html>

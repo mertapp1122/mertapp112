@@ -916,33 +916,58 @@
             document.querySelector('.chat-page').style.display = 'block';
         }
 
-        // Authentication functions
+        // Mock Authentication functions
         async function signInWithGoogle() {
             try {
-                const provider = new firebase.auth.GoogleAuthProvider();
-                await auth.signInWithPopup(provider);
+                // Mock Google user
+                const mockUser = {
+                    uid: 'mock_google_user_123',
+                    email: 'user@gmail.com',
+                    displayName: 'Google User',
+                    photoURL: 'https://lh3.googleusercontent.com/a/default-user=s96-c'
+                };
+                
+                // Set mock current user
+                currentUser = mockUser;
+                updateNavigation();
                 navigate('/chat');
+                
+                console.log('Mock Google login successful');
             } catch (error) {
-                console.error('Google sign in error:', error);
+                console.error('Mock Google sign in error:', error);
                 alert('Sign in failed. Please try again.');
             }
         }
 
         async function signInWithGithub() {
             try {
-                const provider = new firebase.auth.GithubAuthProvider();
-                await auth.signInWithPopup(provider);
+                // Mock GitHub user
+                const mockUser = {
+                    uid: 'mock_github_user_456',
+                    email: 'user@github.com',
+                    displayName: 'GitHub User',
+                    photoURL: 'https://github.com/identicons/sample.png'
+                };
+                
+                // Set mock current user
+                currentUser = mockUser;
+                updateNavigation();
                 navigate('/chat');
+                
+                console.log('Mock GitHub login successful');
             } catch (error) {
-                console.error('GitHub sign in error:', error);
+                console.error('Mock GitHub sign in error:', error);
                 alert('Sign in failed. Please try again.');
             }
         }
 
         async function signOut() {
             try {
-                await auth.signOut();
+                // Mock sign out
+                currentUser = null;
+                updateNavigation();
                 navigate('/');
+                console.log('Mock sign out successful');
             } catch (error) {
                 console.error('Sign out error:', error);
             }
@@ -1013,41 +1038,60 @@
 
         async function sendMessage() {
             const input = document.getElementById('message-input');
-            const message = input.value.trim();
+            const message = input.value.trim().toLowerCase();
             
             if (!message) return;
             
-            // Add user message to chat
-            addMessage('user', message);
+            // Add user message to chat (preserve original case)
+            addMessage('user', input.value.trim());
             input.value = '';
             
             // Show typing indicator
             const typingId = showTyping();
             
-            try {
-                // Call Firebase Function for real AI chat
-                const chatFunction = firebase.functions().httpsCallable('chat');
-                const result = await chatFunction({ message: message });
-                
-                hideTyping(typingId);
-                addMessage('assistant', result.data.response);
-                
-            } catch (error) {
-                console.error('Chat error:', error);
+            // Mock AI responses with realistic delay
+            setTimeout(() => {
                 hideTyping(typingId);
                 
-                // Show helpful error message
-                let errorMessage = 'Sorry, I encountered an error. ';
-                if (error.code === 'unauthenticated') {
-                    errorMessage = 'Please sign in to continue chatting.';
-                } else if (error.code === 'resource-exhausted') {
-                    errorMessage = 'Rate limit reached. Please wait a moment before sending another message.';
-                } else {
-                    errorMessage += 'Please try again in a moment.';
+                let response = '';
+                
+                // Specific responses based on user input
+                if (message === 'hey' || message === 'hi' || message === 'hello') {
+                    response = "Merhaba! Great to see you here! I'm Mert, a former OpenAI researcher who now runs Yapay Zeka Labs in Istanbul. What brings you to chat with me today? Are you interested in AI, startups, or perhaps the Turkish tech scene?";
+                } 
+                else if (message.includes('tell me about gpt') && message.includes('5')) {
+                    response = "Ah, GPT-5! *adjusts glasses excitedly* Having worked on GPT-4 optimization at OpenAI, I can tell you GPT-5 is absolutely revolutionary. It achieves 94.6% on AIME 2025 mathematics, 74.9% on coding benchmarks, and has 45% fewer hallucinations than GPT-4o. The most impressive part? It includes built-in reasoning - it knows when to think step by step versus answering instantly. İnşallah, this brings us much closer to AGI. What specific aspect interests you most?";
+                }
+                else if (message.includes('gpt') || message.includes('ai') || message.includes('artificial intelligence')) {
+                    response = "Fascinating topic! As someone who spent 3 years in San Francisco working on transformer architectures, I've seen AI evolve dramatically. At Yapay Zeka Labs, we're focusing on making AI more aligned with human values. The speed of progress is both exciting and humbling. What's your experience with AI been like?";
+                }
+                else if (message.includes('turkey') || message.includes('turkish') || message.includes('istanbul')) {
+                    response = "Ah, you're interested in the Turkish tech scene! Istanbul has become such a vibrant hub for AI startups. When I moved back from San Francisco, I was amazed by the talent here. We have companies working on everything from computer vision to NLP in Turkish. The cross-cultural perspective really helps in building more inclusive AI systems. Are you based in Turkey yourself?";
+                }
+                else if (message.includes('startup') || message.includes('company') || message.includes('business')) {
+                    response = "Starting Yapay Zeka Labs has been an incredible journey! After my time at OpenAI, I realized how important it is to have diverse voices in AI development. Building a company in Istanbul allows us to bridge Eastern and Western approaches to technology. The key is balancing innovation with responsibility. What's your entrepreneurial background?";
+                }
+                else if (message.includes('openai') || message.includes('sam altman')) {
+                    response = "My time at OpenAI was transformative! Working alongside Sam Altman and the team on GPT-4 optimization taught me so much about both the technical and ethical dimensions of AI. The collaborative culture there was incredible. When I left to start Yapay Zeka Labs, Sam actually said 'Go build something that makes AI better for everyone.' That's still our mission today.";
+                }
+                else if (message.includes('thanks') || message.includes('thank you')) {
+                    response = "Teşekkür ederim! It's my pleasure to chat with you. I love these conversations - they help me think through complex problems and learn new perspectives. Feel free to ask me anything about AI, startups, Turkish tech, or whatever's on your mind!";
+                }
+                else {
+                    // Default responses for other messages
+                    const defaultResponses = [
+                        "That's a really thoughtful question! In my experience at OpenAI, we often found that the most interesting insights come from unexpected directions. What made you think about this particular topic?",
+                        "İlginç! (Interesting!) This reminds me of discussions we had in San Francisco about the future of AI. At Yapay Zeka Labs, we're always exploring these kinds of questions. How do you see this evolving?",
+                        "Great point! You know, when I was working on GPT-4 optimization, we encountered similar challenges. The key is often finding the right balance. What's been your experience with this?",
+                        "Merhaba friend! That's exactly the kind of question that drives innovation. Back at OpenAI, we'd spend hours debating similar topics. What aspects of this are you most curious about?",
+                        "Fascinating perspective! The Turkish tech scene has taught me that diverse viewpoints are crucial for solving complex problems. At our lab in Istanbul, we approach this differently than Silicon Valley might. What's your take on it?"
+                    ];
+                    response = defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
                 }
                 
-                addMessage('assistant', errorMessage);
-            }
+                addMessage('assistant', response);
+                
+            }, Math.random() * 2000 + 1000); // Random delay between 1-3 seconds for realism
         }
 
         function newChat() {
@@ -1103,16 +1147,16 @@
             }
         }
 
-        // Initialize auth state listener
-        auth.onAuthStateChanged((user) => {
-            currentUser = user;
-            updateNavigation();
-            
-            // Redirect if trying to access protected route without auth
-            if (!user && window.location.pathname === '/chat') {
-                navigate('/login');
-            }
-        });
+        // Mock auth state (Firebase auth disabled for demo)
+        // auth.onAuthStateChanged((user) => {
+        //     currentUser = user;
+        //     updateNavigation();
+        //     
+        //     // Redirect if trying to access protected route without auth
+        //     if (!user && window.location.pathname === '/chat') {
+        //         navigate('/login');
+        //     }
+        // });
 
         // Auto-resize textarea
         document.addEventListener('input', (e) => {

@@ -599,6 +599,212 @@
         html {
             scroll-behavior: smooth;
         }
+        
+        /* Chat and Login Styles */
+        .login-section {
+            text-align: center;
+            padding: 80px 40px;
+        }
+        
+        .login-container h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .login-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-width: 400px;
+            margin: 40px auto;
+        }
+        
+        .login-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 16px 32px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            background: white;
+            color: #2d3748;
+            font-weight: 500;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border-color: #667eea;
+        }
+        
+        .google-btn:hover {
+            background: #f8f9fa;
+        }
+        
+        .github-btn:hover {
+            background: #1a202c;
+            color: white;
+        }
+        
+        .chat-section {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+        }
+        
+        .chat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #667eea;
+        }
+        
+        .logout-btn {
+            padding: 8px 16px;
+            background: #f56565;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 0 40px;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .message {
+            max-width: 70%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            font-size: 15px;
+            line-height: 1.4;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .message.user {
+            align-self: flex-end;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+        
+        .message.assistant {
+            align-self: flex-start;
+            background: #f7fafc;
+            color: #2d3748;
+            border: 1px solid #e2e8f0;
+            border-bottom-left-radius: 4px;
+        }
+        
+        .chat-input {
+            display: flex;
+            gap: 12px;
+            padding: 20px 0;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        .chat-input input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 25px;
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+        
+        .chat-input input:focus {
+            border-color: #667eea;
+        }
+        
+        .chat-input button {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: transform 0.2s ease;
+        }
+        
+        .chat-input button:hover {
+            transform: translateY(-1px);
+        }
+        
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 12px 16px;
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            max-width: 70px;
+            align-self: flex-start;
+        }
+        
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #a0aec0;
+            border-radius: 50%;
+            animation: typing 1.5s infinite;
+        }
+        
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-10px); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
@@ -611,11 +817,17 @@
             </div>
         </div>
 
-        <nav class="navigation">
+        <nav class="navigation" id="mainNav">
             <div class="nav-heading" data-target="capabilities">Core Capabilities</div>
             <div class="nav-heading" data-target="demos">Live Demonstrations</div>
             <div class="nav-heading" data-target="performance">Performance Metrics</div>
             <div class="nav-heading" data-target="company">About OpenAI</div>
+            <div class="nav-heading" data-target="login" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">Chat with Mert</div>
+        </nav>
+        
+        <nav class="navigation" id="userNav" style="display: none;">
+            <div class="nav-heading" data-target="chat">Chat</div>
+            <div class="nav-heading" onclick="signOut()" style="background: #f56565; color: white; cursor: pointer;">Logout</div>
         </nav>
 
         <section id="capabilities" class="section">
@@ -716,7 +928,55 @@
             <p>With aggressively competitive pricing at $1.25/million for input and $10/million for output, GPT-5 makes advanced AI accessible to developers and organizations of all sizes.</p>
         </section>
 
-        <section id="company" class="section company-info">
+        </section>
+
+        <!-- Login Section -->
+        <section id="login" class="section login-section" style="display: none;">
+            <div class="login-container">
+                <h2>Login to Chat with Mert</h2>
+                <p>Choose your preferred login method to start chatting:</p>
+                
+                <div class="login-buttons">
+                    <button onclick="signInWithGoogle()" class="login-btn google-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24">
+                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                        </svg>
+                        Continue with Google
+                    </button>
+                    
+                    <button onclick="signInWithGitHub()" class="login-btn github-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                        Continue with GitHub
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Chat Section -->
+        <section id="chat" class="section chat-section" style="display: none;">
+            <div class="chat-header">
+                <div class="user-info">
+                    <img id="userPhoto" class="user-avatar" src="" alt="User Avatar">
+                    <span id="userName"></span>
+                </div>
+                <button onclick="signOut()" class="logout-btn">Logout</button>
+            </div>
+            
+            <div class="chat-container">
+                <div id="chatMessages" class="chat-messages"></div>
+                <div class="chat-input">
+                    <input type="text" id="messageInput" placeholder="Type your message..." onkeypress="handleKeyPress(event)">
+                    <button onclick="sendMessage()" id="sendBtn">Send</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="company" class="section company-info" style="display: none;">
             <h2>About OpenAI</h2>
             <p>Founded in December 2015, OpenAI has evolved from a visionary non-profit into the world's leading artificial intelligence organization, driving the ongoing AI revolution with groundbreaking models like ChatGPT, DALL-E, and now GPT-5.</p>
             
@@ -847,398 +1107,180 @@
     <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-functions-compat.js"></script>
 
     <script>
-        // Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyBNqnUokM-PYOY8BHPLRY-4Rw1tmH5H2To",
-            authDomain: "mert-s-app-55d6c.firebaseapp.com",
-            projectId: "mert-s-app-55d6c",
-            storageBucket: "mert-s-app-55d6c.firebasestorage.app",
-            messagingSenderId: "826830569006",
-            appId: "1:826830569006:web:625791f2cf6e2e4eace9bf",
-            measurementId: "G-WEYK0V0LL9"
-        };
-
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
-        const functions = firebase.functions();
-
-        // Global variables
+        // Mock authentication system
         let currentUser = null;
+        let conversations = [];
 
-        // Router functionality
-        function navigate(path) {
-            window.history.pushState({}, '', path);
-            handleRoute();
-        }
-
-        function handleRoute() {
-            const path = window.location.pathname;
-            
-            if (path === '/login') {
-                showLogin();
-            } else if (path === '/chat') {
-                showChat();
-            } else {
-                showHome();
-            }
-        }
-
-        function showHome() {
-            document.title = 'GPT-5 - Just the Most';
-            document.querySelector('.container').style.display = 'block';
-            document.querySelector('.login-page').style.display = 'none';
-            document.querySelector('.chat-page').style.display = 'none';
-        }
-
-        function showLogin() {
-            if (currentUser) {
-                navigate('/chat');
-                return;
-            }
-            
-            document.title = 'Login - GPT-5';
-            document.querySelector('.container').style.display = 'none';
-            document.querySelector('.login-page').style.display = 'block';
-            document.querySelector('.chat-page').style.display = 'none';
-        }
-
-        function showChat() {
-            if (!currentUser) {
-                navigate('/login');
-                return;
-            }
-            
-            document.title = 'Chat with Mert - GPT-5';
-            document.querySelector('.container').style.display = 'none';
-            document.querySelector('.login-page').style.display = 'none';
-            document.querySelector('.chat-page').style.display = 'block';
-        }
-
-        // Mock Authentication functions
+        // Mock user authentication functions
         async function signInWithGoogle() {
-            try {
-                // Mock Google user
-                const mockUser = {
-                    uid: 'mock_google_user_123',
-                    email: 'user@gmail.com',
-                    displayName: 'Google User',
-                    photoURL: 'https://lh3.googleusercontent.com/a/default-user=s96-c'
-                };
-                
-                // Set mock current user
-                currentUser = mockUser;
-                updateNavigation();
-                navigate('/chat');
-                
-                console.log('Mock Google login successful');
-            } catch (error) {
-                console.error('Mock Google sign in error:', error);
-                alert('Sign in failed. Please try again.');
+            const mockUser = {
+                uid: 'mock_google_user_123',
+                email: 'user@gmail.com',
+                displayName: 'Google User',
+                photoURL: 'https://lh3.googleusercontent.com/a/default-user=s96-c'
+            };
+            currentUser = mockUser;
+            updateNavigation();
+            navigate('chat');
+        }
+        
+        async function signInWithGitHub() {
+            const mockUser = {
+                uid: 'mock_github_user_456',
+                email: 'user@github.com', 
+                displayName: 'GitHub User',
+                photoURL: 'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png'
+            };
+            currentUser = mockUser;
+            updateNavigation();
+            navigate('chat');
+        }
+        
+        function signOut() {
+            currentUser = null;
+            conversations = [];
+            document.getElementById('chatMessages').innerHTML = '';
+            updateNavigation();
+            navigate('');
+        }
+        
+        function updateNavigation() {
+            const mainNav = document.getElementById('mainNav');
+            const userNav = document.getElementById('userNav');
+            
+            if (currentUser) {
+                mainNav.style.display = 'none';
+                userNav.style.display = 'flex';
+                document.getElementById('userName').textContent = currentUser.displayName;
+                document.getElementById('userPhoto').src = currentUser.photoURL;
+            } else {
+                mainNav.style.display = 'flex';
+                userNav.style.display = 'none';
             }
         }
-
-        async function signInWithGithub() {
-            try {
-                // Mock GitHub user
-                const mockUser = {
-                    uid: 'mock_github_user_456',
-                    email: 'user@github.com',
-                    displayName: 'GitHub User',
-                    photoURL: 'https://github.com/identicons/sample.png'
-                };
-                
-                // Set mock current user
-                currentUser = mockUser;
-                updateNavigation();
-                navigate('/chat');
-                
-                console.log('Mock GitHub login successful');
-            } catch (error) {
-                console.error('Mock GitHub sign in error:', error);
-                alert('Sign in failed. Please try again.');
-            }
-        }
-
-        async function signOut() {
-            try {
-                // Mock sign out
-                currentUser = null;
-                updateNavigation();
-                navigate('/');
-                console.log('Mock sign out successful');
-            } catch (error) {
-                console.error('Sign out error:', error);
-            }
-        }
-
+        
         // Chat functions
-        function addMessage(role, content) {
-            const messagesContainer = document.getElementById('chat-messages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${role}-message`;
-            
-            const avatar = role === 'assistant' 
-                ? '<div class="avatar">M</div>' 
-                : `<div class="avatar user-avatar"><img src="${currentUser?.photoURL || '/default-avatar.png'}" alt="User"></div>`;
-                
-            messageDiv.innerHTML = `
-                <div class="message-avatar">
-                    ${avatar}
-                </div>
-                <div class="message-content">
-                    <div class="message-text">${formatMessage(content)}</div>
-                    <div class="message-time">${new Date().toLocaleTimeString()}</div>
-                </div>
-            `;
-            
-            messagesContainer.appendChild(messageDiv);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
-
-        function formatMessage(content) {
-            return content
-                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                .replace(/\*(.*?)\*/g, '<em>$1</em>')
-                .replace(/\n/g, '<br>');
-        }
-
-        function showTyping() {
-            const messagesContainer = document.getElementById('chat-messages');
-            const typingDiv = document.createElement('div');
-            typingDiv.className = 'message assistant-message typing-message';
-            typingDiv.id = 'typing-' + Date.now();
-            
-            typingDiv.innerHTML = `
-                <div class="message-avatar">
-                    <div class="avatar">M</div>
-                </div>
-                <div class="message-content">
-                    <div class="typing-indicator">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
-                </div>
-            `;
-            
-            messagesContainer.appendChild(typingDiv);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            
-            return typingDiv.id;
-        }
-
-        function hideTyping(typingId) {
-            const typingElement = document.getElementById(typingId);
-            if (typingElement) {
-                typingElement.remove();
-            }
-        }
-
         async function sendMessage() {
-            const input = document.getElementById('message-input');
-            const message = input.value.trim().toLowerCase();
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
             
             if (!message) return;
             
-            // Add user message to chat (preserve original case)
-            addMessage('user', input.value.trim());
+            // Add user message to chat
+            addMessage(message, 'user');
             input.value = '';
             
             // Show typing indicator
-            const typingId = showTyping();
+            showTypingIndicator();
             
-            // Mock AI responses with realistic delay
+            // Simulate AI response delay
             setTimeout(() => {
-                hideTyping(typingId);
-                
-                let response = '';
-                
-                // Specific responses based on user input
-                if (message === 'hey' || message === 'hi' || message === 'hello') {
-                    response = "Merhaba! Great to see you here! I'm Mert, a former OpenAI researcher who now runs Yapay Zeka Labs in Istanbul. What brings you to chat with me today? Are you interested in AI, startups, or perhaps the Turkish tech scene?";
-                } 
-                else if (message.includes('tell me about gpt') && message.includes('5')) {
-                    response = "Ah, GPT-5! *adjusts glasses excitedly* Having worked on GPT-4 optimization at OpenAI, I can tell you GPT-5 is absolutely revolutionary. It achieves 94.6% on AIME 2025 mathematics, 74.9% on coding benchmarks, and has 45% fewer hallucinations than GPT-4o. The most impressive part? It includes built-in reasoning - it knows when to think step by step versus answering instantly. İnşallah, this brings us much closer to AGI. What specific aspect interests you most?";
-                }
-                else if (message.includes('gpt') || message.includes('ai') || message.includes('artificial intelligence')) {
-                    response = "Fascinating topic! As someone who spent 3 years in San Francisco working on transformer architectures, I've seen AI evolve dramatically. At Yapay Zeka Labs, we're focusing on making AI more aligned with human values. The speed of progress is both exciting and humbling. What's your experience with AI been like?";
-                }
-                else if (message.includes('turkey') || message.includes('turkish') || message.includes('istanbul')) {
-                    response = "Ah, you're interested in the Turkish tech scene! Istanbul has become such a vibrant hub for AI startups. When I moved back from San Francisco, I was amazed by the talent here. We have companies working on everything from computer vision to NLP in Turkish. The cross-cultural perspective really helps in building more inclusive AI systems. Are you based in Turkey yourself?";
-                }
-                else if (message.includes('startup') || message.includes('company') || message.includes('business')) {
-                    response = "Starting Yapay Zeka Labs has been an incredible journey! After my time at OpenAI, I realized how important it is to have diverse voices in AI development. Building a company in Istanbul allows us to bridge Eastern and Western approaches to technology. The key is balancing innovation with responsibility. What's your entrepreneurial background?";
-                }
-                else if (message.includes('openai') || message.includes('sam altman')) {
-                    response = "My time at OpenAI was transformative! Working alongside Sam Altman and the team on GPT-4 optimization taught me so much about both the technical and ethical dimensions of AI. The collaborative culture there was incredible. When I left to start Yapay Zeka Labs, Sam actually said 'Go build something that makes AI better for everyone.' That's still our mission today.";
-                }
-                else if (message.includes('thanks') || message.includes('thank you')) {
-                    response = "Teşekkür ederim! It's my pleasure to chat with you. I love these conversations - they help me think through complex problems and learn new perspectives. Feel free to ask me anything about AI, startups, Turkish tech, or whatever's on your mind!";
-                }
-                else {
-                    // Default responses for other messages
-                    const defaultResponses = [
-                        "That's a really thoughtful question! In my experience at OpenAI, we often found that the most interesting insights come from unexpected directions. What made you think about this particular topic?",
-                        "İlginç! (Interesting!) This reminds me of discussions we had in San Francisco about the future of AI. At Yapay Zeka Labs, we're always exploring these kinds of questions. How do you see this evolving?",
-                        "Great point! You know, when I was working on GPT-4 optimization, we encountered similar challenges. The key is often finding the right balance. What's been your experience with this?",
-                        "Merhaba friend! That's exactly the kind of question that drives innovation. Back at OpenAI, we'd spend hours debating similar topics. What aspects of this are you most curious about?",
-                        "Fascinating perspective! The Turkish tech scene has taught me that diverse viewpoints are crucial for solving complex problems. At our lab in Istanbul, we approach this differently than Silicon Valley might. What's your take on it?"
-                    ];
-                    response = defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
-                }
-                
-                addMessage('assistant', response);
-                
-            }, Math.random() * 2000 + 1000); // Random delay between 1-3 seconds for realism
+                hideTypingIndicator();
+                const response = generateResponse(message);
+                addMessage(response, 'assistant');
+            }, 1000 + Math.random() * 2000);
         }
-
-        function newChat() {
-            const messagesContainer = document.getElementById('chat-messages');
-            messagesContainer.innerHTML = `
-                <div class="message assistant-message">
-                    <div class="message-avatar">
-                        <div class="avatar">M</div>
-                    </div>
-                    <div class="message-content">
-                        <div class="message-text">
-                            Merhaba again! Ready for a new conversation? What would you like to explore today?
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        function updateNavigation() {
-            const navigation = document.querySelector('.navigation');
-            let userNav = document.querySelector('.user-nav');
+        
+        function generateResponse(message) {
+            const lowerMessage = message.toLowerCase();
             
-            if (currentUser) {
-                // Add Chat with Mert link
-                if (!document.querySelector('.chat-nav-link')) {
-                    const chatLink = document.createElement('div');
-                    chatLink.className = 'nav-heading chat-nav-link';
-                    chatLink.textContent = 'Chat with Mert';
-                    chatLink.onclick = () => navigate('/chat');
-                    navigation.appendChild(chatLink);
-                }
-                
-                // Update user navigation
-                if (!userNav) {
-                    userNav = document.createElement('div');
-                    userNav.className = 'user-nav';
-                    document.querySelector('.container').prepend(userNav);
-                }
-                
-                userNav.innerHTML = `
-                    <div class="user-info">
-                        <img src="${currentUser.photoURL || '/default-avatar.png'}" alt="User" class="user-avatar">
-                        <span>${currentUser.displayName || currentUser.email}</span>
-                        <button onclick="signOut()" class="logout-btn">Logout</button>
-                    </div>
-                `;
+            if (lowerMessage === 'hey' || lowerMessage === 'hi' || lowerMessage === 'hello') {
+                return "Merhaba! Great to see you here! I'm Mert, a former OpenAI researcher turned entrepreneur. I spent three incredible years in San Francisco working on GPT-4 optimization before returning to Istanbul to start Yapay Zeka Labs. What brings you here today? I'd love to hear what you're curious about!";
+            } else if (lowerMessage.includes('tell me about gpt') && lowerMessage.includes('5')) {
+                return "Ah, GPT-5! *adjusts glasses excitedly* Having worked on GPT-4 optimization at OpenAI, I can tell you GPT-5 is truly revolutionary. Launched in August 2025, it's not just an upgrade—it's a quantum leap. The built-in reasoning capabilities are phenomenal, deciding when to think step-by-step vs. answering instantly. We're seeing 88% on SWE-bench, 84.2% on MMMU multimodal tasks... and the efficiency! 50-80% fewer tokens than o3 while performing better. At $1.25/million input tokens, it's making advanced AI accessible to everyone. İnşallah, this will democratize AI development globally! What specific aspect interests you most?";
+            } else if (lowerMessage.includes('istanbul') || lowerMessage.includes('turkey') || lowerMessage.includes('turkish')) {
+                return "Istanbul is amazing for tech! Since returning from San Francisco, I've been blown away by the growing Turkish AI ecosystem. We have incredible talent here, and the bridge between European and Asian markets is perfect for global AI applications. At Yapay Zeka Labs, we're working on Turkish-specific language models and cross-cultural AI solutions. The startup scene in Levent and Maslak is really taking off. Are you involved in the Turkish tech scene too?";
+            } else if (lowerMessage.includes('openai') || lowerMessage.includes('san francisco')) {
+                return "My time at OpenAI was transformative! Working in San Francisco from 2022-2024, I was part of the team optimizing GPT-4's performance and efficiency. The pace of innovation there is incredible—every day felt like we were pushing the boundaries of what's possible. The collaboration between research and engineering teams taught me so much about scaling AI systems. Now I'm applying those lessons here in Istanbul, but with a focus on ethical AI and global accessibility. What aspects of OpenAI's work interest you most?";
+            } else if (lowerMessage.includes('ai safety') || lowerMessage.includes('alignment') || lowerMessage.includes('ethics')) {
+                return "AI safety is absolutely crucial—it's one of the core reasons I started Yapay Zeka Labs. During my OpenAI days, I saw firsthand how important alignment and safety measures are as models become more powerful. We need to ensure AI benefits everyone, not just a few. Here in Turkey, I'm particularly focused on cultural alignment—making sure AI systems understand and respect different cultural contexts. The global nature of AI means we need diverse perspectives in safety research. What are your thoughts on the current state of AI safety?";
+            } else if (lowerMessage.includes('startup') || lowerMessage.includes('entrepreneur') || lowerMessage.includes('business')) {
+                return "Transitioning from researcher to entrepreneur has been quite the journey! After seeing the potential of AI at OpenAI, I knew I wanted to build something that could have real-world impact. Yapay Zeka Labs focuses on making advanced AI accessible and culturally aware. The Turkish market is perfect for this—we're at the crossroads of so many cultures and languages. Plus, the government's support for tech startups has been encouraging. The hardest part? Balancing technical innovation with business needs. But it's incredibly rewarding! Are you thinking about starting something in AI?";
             } else {
-                // Remove chat link and user nav when logged out
-                const chatLink = document.querySelector('.chat-nav-link');
-                if (chatLink) chatLink.remove();
-                
-                if (userNav) userNav.remove();
+                const responses = [
+                    "That's a fascinating question! As someone who's worked on both the research and application sides of AI, I find these kinds of discussions really engaging. What's your take on this?",
+                    "Interesting perspective! From my experience at OpenAI and now running Yapay Zeka Labs, I've learned that the most important insights often come from asking the right questions. Can you tell me more about what sparked this thought?",
+                    "You know, working between San Francisco and Istanbul has given me a unique view on global AI development. This reminds me of discussions we used to have in the OpenAI offices. What's driving your interest in this area?",
+                    "Great point! AI development is moving so fast these days. Between my research background and current work in Istanbul's growing tech scene, I'm always curious about different perspectives. What would you like to explore further?"
+                ];
+                return responses[Math.floor(Math.random() * responses.length)];
+            }
+        }
+        
+        function addMessage(content, role) {
+            const messagesContainer = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${role}`;
+            messageDiv.textContent = content;
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+        
+        function showTypingIndicator() {
+            const messagesContainer = document.getElementById('chatMessages');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'typing-indicator';
+            typingDiv.id = 'typingIndicator';
+            typingDiv.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+            messagesContainer.appendChild(typingDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+        
+        function hideTypingIndicator() {
+            const typingIndicator = document.getElementById('typingIndicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+        
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+        
+        // Navigation system
+        function navigate(section) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
+            document.querySelector('.container').style.display = 'none';
+            
+            if (section === 'chat') {
+                document.getElementById('chat').style.display = 'flex';
+            } else if (section === 'login') {
+                document.getElementById('login').style.display = 'block';
+            } else {
+                // Show main page
+                document.querySelector('.container').style.display = 'block';
+                document.getElementById('capabilities').style.display = 'block';
+                document.getElementById('demos').style.display = 'block';
+                document.getElementById('performance').style.display = 'block';
+                document.getElementById('company').style.display = 'block';
             }
         }
 
-        // Mock auth state (Firebase auth disabled for demo)
-        // auth.onAuthStateChanged((user) => {
-        //     currentUser = user;
-        //     updateNavigation();
-        //     
-        //     // Redirect if trying to access protected route without auth
-        //     if (!user && window.location.pathname === '/chat') {
-        //         navigate('/login');
-        //     }
-        // });
-
-        // Auto-resize textarea
-        document.addEventListener('input', (e) => {
-            if (e.target.id === 'message-input') {
-                e.target.style.height = 'auto';
-                e.target.style.height = e.target.scrollHeight + 'px';
-            }
-        });
-
-        // Send message on Enter (but not Shift+Enter)
-        document.addEventListener('keydown', (e) => {
-            if (e.target.id === 'message-input' && e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                document.getElementById('send-btn').click();
-            }
-        });
-
-        // Handle browser navigation
-        window.addEventListener('popstate', handleRoute);
-
-        // Original navigation functionality
+        // Page initialization
         document.addEventListener('DOMContentLoaded', function() {
-            const navHeadings = document.querySelectorAll('.nav-heading');
-            const sections = document.querySelectorAll('.section');
-            
-            // Navigation click handlers
-            navHeadings.forEach(heading => {
-                heading.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    // Skip if it's the chat link
-                    if (this.classList.contains('chat-nav-link')) {
-                        return;
-                    }
-                    
-                    // Add click animation
-                    this.style.transform = 'scale(0.95)';
-                    this.style.transition = 'transform 0.1s ease';
-                    
-                    setTimeout(() => {
-                        this.style.transform = 'scale(1)';
-                        this.style.transition = 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-                    }, 100);
-                    
-                    // Scroll to target section
-                    const targetId = this.getAttribute('data-target');
-                    const targetSection = document.getElementById(targetId);
-                    
-                    if (targetSection) {
-                        targetSection.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
+            // Add navigation click handlers
+            document.querySelectorAll('.nav-heading').forEach(heading => {
+                heading.addEventListener('click', function() {
+                    const target = this.getAttribute('data-target');
+                    if (target === 'login') {
+                        navigate('login');
+                    } else if (target === 'chat') {
+                        navigate('chat');
+                    } else if (target) {
+                        // Smooth scroll to section
+                        const targetSection = document.getElementById(target);
+                        if (targetSection) {
+                            targetSection.scrollIntoView({ behavior: 'smooth' });
+                        }
                     }
                 });
             });
             
-            // Intersection Observer for section animations
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            };
-            
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('active');
-                    }
-                });
-            }, observerOptions);
-            
-            sections.forEach(section => {
-                observer.observe(section);
-            });
-            
-            // Initialize first section
-            if (sections.length > 0) {
-                sections[0].classList.add('active');
-            }
-
-            // Initialize router
-            handleRoute();
+            // Initialize navigation state
+            updateNavigation();
         });
     </script>
 </body>

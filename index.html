@@ -1,1315 +1,286 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GPT-5 - Just the Most</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            line-height: 1.7;
-            color: #1a1a1a;
-            background: #fefefe;
-            position: relative;
-            overflow-x: hidden;
-        }
-
-        /* Subtle paper texture background */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0.02;
-            z-index: -1;
-            background-image: 
-                radial-gradient(circle at 1px 1px, rgba(0,0,0,.15) 1px, transparent 0);
-            background-size: 20px 20px;
-            pointer-events: none;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 80px 40px;
-        }
-
-        .hero {
-            margin-bottom: 80px;
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            font-weight: 300;
-            letter-spacing: -0.02em;
-            margin-bottom: 20px;
-            color: #111;
-        }
-
-        .hero .subtitle {
-            font-size: 1.3rem;
-            color: #666;
-            font-weight: 300;
-            margin-bottom: 40px;
-        }
-
-        .hero .description {
-            font-size: 1.1rem;
-            color: #444;
-            margin-bottom: 60px;
-            max-width: 600px;
-        }
-
-        .navigation {
-            margin-bottom: 100px;
-        }
-
-        .nav-heading {
-            display: inline-block;
-            font-size: 1.4rem;
-            font-weight: 400;
-            color: #111;
-            text-decoration: underline;
-            text-decoration-color: #111;
-            text-underline-offset: 8px;
-            text-decoration-thickness: 1px;
-            cursor: pointer;
-            margin-bottom: 30px;
-            margin-right: 40px;
-            transition: all 0.2s ease;
-            position: relative;
-        }
-
-        .nav-heading:hover {
-            animation: flicker 0.6s ease-in-out;
-        }
-
-        @keyframes flicker {
-            0%, 100% { 
-                background-color: transparent;
-                color: #111;
-            }
-            25%, 75% { 
-                background-color: #111;
-                color: #fefefe;
-                text-decoration-color: #111;
-            }
-            50% { 
-                background-color: transparent;
-                color: #111;
-            }
-        }
-
-        .section {
-            margin-bottom: 80px;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-
-        .section.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .section h2 {
-            font-size: 2rem;
-            font-weight: 500;
-            margin-bottom: 30px;
-            color: #111;
-        }
-
-        .section h3 {
-            font-size: 1.3rem;
-            font-weight: 500;
-            margin-bottom: 20px;
-            margin-top: 40px;
-            color: #222;
-        }
-
-        .section p {
-            font-size: 1rem;
-            margin-bottom: 20px;
-            color: #444;
-        }
-
-        .capabilities-grid {
-            display: grid;
-            gap: 30px;
-            margin: 30px 0;
-        }
-
-        .capability-item {
-            border-left: 2px solid #e0e0e0;
-            padding-left: 20px;
-        }
-
-        .capability-item h4 {
-            font-size: 1.1rem;
-            font-weight: 500;
-            margin-bottom: 10px;
-            color: #111;
-        }
-
-        .capability-item p {
-            color: #555;
-            font-size: 0.95rem;
-        }
-
-        .demo-highlight {
-            background: linear-gradient(135deg, #f8f9fa 0%, #f1f3f4 100%);
-            border-left: 3px solid #111;
-            padding: 30px;
-            margin: 40px 0;
-            font-style: italic;
-        }
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px;
-            margin: 40px 0;
-        }
-
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: 600;
-            color: #111;
-            display: block;
-        }
-
-        .stat-label {
-            font-size: 0.9rem;
-            color: #666;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .company-info {
-            border-top: 1px solid #e0e0e0;
-            padding-top: 60px;
-            margin-top: 80px;
-        }
-
-        .founders-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        .founder {
-            background: #f8f9fa;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            color: #555;
-        }
-
-        /* User Navigation Styles */
-        .user-nav {
-            position: absolute;
-            top: 20px;
-            right: 40px;
-        }
-        
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .user-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-        
-        .logout-btn {
-            background: #111;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-        
-        .logout-btn:hover {
-            background: #333;
-        }
-        
-        /* Login Page Styles */
-        .login-page {
-            display: none;
-        }
-        
-        .login-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 80vh;
-        }
-        
-        .login-card {
-            background: white;
-            padding: 60px 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
-            width: 100%;
-            text-align: center;
-        }
-        
-        .login-card h1 {
-            font-size: 1.8rem;
-            margin-bottom: 16px;
-            color: #111;
-        }
-        
-        .login-description {
-            color: #666;
-            margin-bottom: 40px;
-            line-height: 1.6;
-        }
-        
-        .login-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            margin-bottom: 40px;
-        }
-        
-        .login-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            padding: 12px 24px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            background: white;
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .login-btn:hover {
-            border-color: #111;
-            transform: translateY(-1px);
-        }
-        
-        .github-btn {
-            background: #24292e;
-            color: white;
-            border-color: #24292e;
-        }
-        
-        .github-btn:hover {
-            background: #1a1e22;
-            border-color: #1a1e22;
-        }
-        
-        .login-footer a {
-            color: #666;
-            text-decoration: none;
-        }
-        
-        .login-footer a:hover {
-            text-decoration: underline;
-        }
-        
-        /* Chat Page Styles */
-        .chat-page {
-            display: none;
-        }
-        
-        .chat-container {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            max-width: none;
-            padding: 0;
-            margin: 0;
-        }
-        
-        .chat-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 40px;
-            border-bottom: 1px solid #e0e0e0;
-            background: white;
-        }
-        
-        .chat-title h2 {
-            font-size: 1.5rem;
-            margin: 0;
-            color: #111;
-        }
-        
-        .chat-subtitle {
-            color: #666;
-            font-size: 0.9rem;
-            margin: 4px 0 0 0;
-        }
-        
-        .chat-actions {
-            display: flex;
-            gap: 16px;
-            align-items: center;
-        }
-        
-        .new-chat-btn {
-            background: #111;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-        
-        .new-chat-btn:hover {
-            background: #333;
-        }
-        
-        .back-home {
-            color: #666;
-            text-decoration: none;
-            font-size: 0.9rem;
-        }
-        
-        .back-home:hover {
-            text-decoration: underline;
-        }
-        
-        .chat-messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px 40px;
-            background: #fafafa;
-        }
-        
-        .message {
-            display: flex;
-            margin-bottom: 24px;
-            align-items: flex-start;
-            gap: 12px;
-        }
-        
-        .message-avatar {
-            flex-shrink: 0;
-        }
-        
-        .avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: #111;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-        }
-        
-        .user-avatar img {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-        
-        .user-message {
-            flex-direction: row-reverse;
-        }
-        
-        .user-message .message-content {
-            text-align: right;
-        }
-        
-        .message-content {
-            flex: 1;
-            max-width: 70%;
-        }
-        
-        .message-text {
-            background: white;
-            padding: 12px 16px;
-            border-radius: 12px;
-            font-size: 0.95rem;
-            line-height: 1.5;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-        
-        .user-message .message-text {
-            background: #111;
-            color: white;
-        }
-        
-        .message-time {
-            font-size: 0.75rem;
-            color: #999;
-            margin-top: 4px;
-        }
-        
-        .chat-input-container {
-            padding: 20px 40px;
-            background: white;
-            border-top: 1px solid #e0e0e0;
-        }
-        
-        .chat-input {
-            display: flex;
-            align-items: flex-end;
-            gap: 12px;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        #message-input {
-            flex: 1;
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            padding: 12px 16px;
-            font-size: 0.95rem;
-            font-family: inherit;
-            resize: none;
-            min-height: 44px;
-            max-height: 120px;
-            outline: none;
-        }
-        
-        #message-input:focus {
-            border-color: #111;
-        }
-        
-        .send-btn {
-            background: #111;
-            color: white;
-            border: none;
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-        
-        .send-btn:hover {
-            background: #333;
-        }
-        
-        .send-btn:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-        }
-        
-        /* Typing indicator */
-        .typing-indicator {
-            display: flex;
-            gap: 4px;
-            padding: 12px 16px;
-        }
-        
-        .typing-indicator span {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: #666;
-            animation: typing 1.4s infinite;
-        }
-        
-        .typing-indicator span:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-        
-        .typing-indicator span:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-        
-        @keyframes typing {
-            0%, 60%, 100% {
-                transform: translateY(0);
-                opacity: 0.4;
-            }
-            30% {
-                transform: translateY(-10px);
-                opacity: 1;
-            }
-        }
-
-        /* Responsive design */
-        @media (max-width: 768px) {
-            .container {
-                padding: 60px 20px;
-            }
-            
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-            
-            .nav-heading {
-                display: block;
-                margin-right: 0;
-                margin-bottom: 20px;
-            }
-            
-            .stats {
-                grid-template-columns: 1fr;
-            }
-            
-            .user-nav {
-                position: static;
-                margin-bottom: 20px;
-            }
-            
-            .chat-header {
-                padding: 15px 20px;
-            }
-            
-            .chat-messages {
-                padding: 15px 20px;
-            }
-            
-            .chat-input-container {
-                padding: 15px 20px;
-            }
-        }
-
-        /* Smooth scroll behavior */
-        html {
-            scroll-behavior: smooth;
-        }
-        
-        /* Chat and Login Styles */
-        .login-section {
-            text-align: center;
-            padding: 80px 40px;
-        }
-        
-        .login-container h2 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .login-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            max-width: 400px;
-            margin: 40px auto;
-        }
-        
-        .login-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            padding: 16px 32px;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            background: white;
-            color: #2d3748;
-            font-weight: 500;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-        }
-        
-        .login-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-            border-color: #667eea;
-        }
-        
-        .google-btn:hover {
-            background: #f8f9fa;
-        }
-        
-        .github-btn:hover {
-            background: #1a202c;
-            color: white;
-        }
-        
-        .chat-section {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            padding: 0;
-        }
-        
-        .chat-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 40px;
-            background: white;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: 2px solid #667eea;
-        }
-        
-        .logout-btn {
-            padding: 8px 16px;
-            background: #f56565;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 500;
-        }
-        
-        .chat-container {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            max-width: 800px;
-            margin: 0 auto;
-            width: 100%;
-            padding: 0 40px;
-        }
-        
-        .chat-messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px 0;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        
-        .message {
-            max-width: 70%;
-            padding: 12px 16px;
-            border-radius: 18px;
-            font-size: 15px;
-            line-height: 1.4;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        .message.user {
-            align-self: flex-end;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-bottom-right-radius: 4px;
-        }
-        
-        .message.assistant {
-            align-self: flex-start;
-            background: #f7fafc;
-            color: #2d3748;
-            border: 1px solid #e2e8f0;
-            border-bottom-left-radius: 4px;
-        }
-        
-        .chat-input {
-            display: flex;
-            gap: 12px;
-            padding: 20px 0;
-            border-top: 1px solid #e2e8f0;
-        }
-        
-        .chat-input input {
-            flex: 1;
-            padding: 12px 16px;
-            border: 2px solid #e2e8f0;
-            border-radius: 25px;
-            font-size: 15px;
-            outline: none;
-            transition: border-color 0.3s ease;
-        }
-        
-        .chat-input input:focus {
-            border-color: #667eea;
-        }
-        
-        .chat-input button {
-            padding: 12px 24px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: transform 0.2s ease;
-        }
-        
-        .chat-input button:hover {
-            transform: translateY(-1px);
-        }
-        
-        .typing-indicator {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            padding: 12px 16px;
-            background: #f7fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 18px;
-            max-width: 70px;
-            align-self: flex-start;
-        }
-        
-        .typing-dot {
-            width: 8px;
-            height: 8px;
-            background: #a0aec0;
-            border-radius: 50%;
-            animation: typing 1.5s infinite;
-        }
-        
-        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
-        
-        @keyframes typing {
-            0%, 60%, 100% { transform: translateY(0); }
-            30% { transform: translateY(-10px); }
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Mert's AI Chat - GPT-5 Demo</title>
+  <style>
+    :root{
+      --ink:#222; --paper:#f7f7f5; --soft:#eae8e3; --accent:#3a7afe;
+      --muted:#777; --ok:#18a058; --bad:#d14343;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; color:var(--ink); background:var(--paper);
+      font: 16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, Apple Color Emoji, Segoe UI Emoji;
+    }
+    /* çok hafif doku */
+    body:before{
+      content:""; position:fixed; inset:0; pointer-events:none; opacity:.35;
+      background:
+        repeating-linear-gradient(0deg, rgba(0,0,0,.02) 0 2px, rgba(0,0,0,0) 2px 4px),
+        radial-gradient(1200px 600px at 0% -10%, rgba(0,0,0,.03), transparent 60%),
+        radial-gradient(1200px 600px at 100% 110%, rgba(0,0,0,.03), transparent 60%);
+      mix-blend-mode:multiply;
+    }
+    a{color:var(--accent); text-decoration:none}
+    .container{max-width:900px; margin:40px auto; padding:24px;}
+    .card{
+      background:white; border:1px solid #ddd; border-radius:16px; box-shadow:0 6px 20px rgba(0,0,0,.06);
+      overflow:hidden;
+    }
+    header{
+      padding:18px 22px; border-bottom:1px solid #eee; display:flex; align-items:center; gap:10px; justify-content:space-between;
+      background:linear-gradient(to bottom, rgba(255,255,255,.9), rgba(255,255,255,.6));
+      position:sticky; top:0; backdrop-filter:saturate(1.2) blur(6px); z-index:2;
+    }
+    header h1{margin:0; font-size:18px}
+    header nav{display:flex; gap:10px}
+    button{
+      appearance:none; border:1px solid #ddd; background:white; color:var(--ink);
+      padding:10px 14px; border-radius:12px; cursor:pointer; transition:.15s transform, .15s box-shadow, .15s background;
+    }
+    button:hover{transform:translateY(-1px); box-shadow:0 6px 16px rgba(0,0,0,.08)}
+    button.primary{background:var(--accent); color:#fff; border-color:transparent}
+    button.ghost{background:transparent}
+    .hidden{display:none !important}
+    /* Login */
+    .login{
+      display:grid; gap:14px; padding:28px; max-width:420px; margin:30px auto;
+    }
+    .field{display:grid; gap:6px}
+    .field label{font-size:13px; color:var(--muted)}
+    .field input{
+      padding:12px 14px; border:1px solid #ddd; border-radius:12px; outline:none;
+    }
+    .hint{font-size:12px; color:var(--muted)}
+    .error{color:var(--bad); font-size:13px}
+    /* Chat */
+    .chat{
+      display:grid; grid-template-rows: auto 1fr auto; height:70vh;
+    }
+    .messages{
+      padding:22px; overflow:auto; display:flex; flex-direction:column; gap:12px; background:linear-gradient(#fff, #fdfdfd);
+    }
+    .msg{max-width:72%; padding:12px 14px; border-radius:14px; border:1px solid #e9e9e9; box-shadow:0 2px 6px rgba(0,0,0,.04)}
+    .msg.user{align-self:flex-end; background:#eef4ff; border-color:#dbe6ff}
+    .msg.ai{align-self:flex-start; background:#fff}
+    .msg .who{font-size:12px; color:var(--muted); margin-bottom:4px}
+    .typing{display:inline-block; width:6px; height:6px; background:#bbb; border-radius:50%; box-shadow:10px 0 0 #bbb, 20px 0 0 #bbb; animation: blink 1s infinite}
+    @keyframes blink{0%,100%{opacity:.2} 50%{opacity:1}}
+    .composer{display:flex; gap:10px; padding:14px; border-top:1px solid #eee; background:rgba(255,255,255,.9)}
+    .composer textarea{
+      flex:1; resize:none; height:46px; padding:12px; border-radius:12px; border:1px solid #ddd; outline:none;
+    }
+    .route-title{padding:22px 22px 0; font-weight:600; color:#333}
+    .muted{color:var(--muted)}
+  </style>
 </head>
 <body>
-    <!-- Login Section -->
-    <section id="login" class="section login-section" style="display: block;">
-        <div class="login-container">
-            <h2>Login to Chat with Mert</h2>
-            <p>Choose your preferred login method to start chatting:</p>
-            
-            <div class="login-buttons">
-                <button onclick="signInWithGoogle()" class="login-btn google-btn">
-                    <svg width="20" height="20" viewBox="0 0 24 24">
-                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                    </svg>
-                    Continue with Google
-                </button>
-                
-                <button onclick="signInWithGitHub()" class="login-btn github-btn">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                    </svg>
-                    Continue with GitHub
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Chat Section -->
-    <section id="chat" class="section chat-section" style="display: none;">
-        <div class="chat-header">
-            <div class="user-info">
-                <img id="userPhoto" class="user-avatar" src="" alt="User Avatar">
-                <span id="userName"></span>
-            </div>
-            <button onclick="signOut()" class="logout-btn">Logout</button>
-        </div>
-        
-        <div class="chat-container">
-            <div id="chatMessages" class="chat-messages"></div>
-            <div class="chat-input">
-                <input type="text" id="messageInput" placeholder="Type your message..." onkeypress="handleKeyPress(event)">
-                <button onclick="sendMessage()" id="sendBtn">Send</button>
-            </div>
-        </div>
-    </section>
-
-    <div class="container" style="display: none;">
-        <div class="hero" style="display: none;">
-            <h1>GPT-5</h1>
-            <div class="subtitle">Just the Most</div>
-            <div class="description">
-                OpenAI's GPT-5 represents a quantum leap in artificial intelligence, combining unprecedented reasoning capabilities with lightning-fast performance. Launched in August 2025, it's not just an upgrade—it's a complete reimagining of what AI can achieve.
-            </div>
-        </div>
-
-        <nav class="navigation" id="mainNav" style="display: none;">
-            <div class="nav-heading" data-target="capabilities">Core Capabilities</div>
-            <div class="nav-heading" data-target="demos">Live Demonstrations</div>
-            <div class="nav-heading" data-target="performance">Performance Metrics</div>
-            <div class="nav-heading" data-target="company">About OpenAI</div>
-            <div class="nav-heading" data-target="login" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">Chat with Mert</div>
+  <div class="container">
+    <div class="card">
+      <header>
+        <h1>Mert's GPT-5 Chat</h1>
+        <nav>
+          <button id="toLogin" class="ghost">Login</button>
+          <button id="toChat" class="ghost">Chat</button>
+          <button id="logoutBtn" class="ghost hidden">Logout</button>
         </nav>
-        
-        <nav class="navigation" id="userNav" style="display: none;">
-            <div class="nav-heading" data-target="chat">Chat</div>
-            <div class="nav-heading" onclick="signOut()" style="background: #f56565; color: white; cursor: pointer;">Logout</div>
-        </nav>
+      </header>
 
-        <section id="capabilities" class="section" style="display: none;">
-            <h2>Revolutionary Capabilities</h2>
-            <p>GPT-5 isn't just smarter—it thinks. With built-in reasoning capabilities and unprecedented performance across every domain, it represents the closest we've come to artificial general intelligence.</p>
-            
-            <div class="capabilities-grid">
-                <div class="capability-item">
-                    <h4>Advanced Reasoning</h4>
-                    <p>GPT-5 includes a built-in routing system that decides when to answer instantly and when to think in steps, delivering profound responses at astonishing speed.</p>
-                </div>
-                
-                <div class="capability-item">
-                    <h4>Superior Coding</h4>
-                    <p>Achieving 74.9% on SWE-bench Verified and 88% on Aider Polyglot, GPT-5 can create complex web applications and games in minutes, not hours.</p>
-                </div>
-                
-                <div class="capability-item">
-                    <h4>Mathematical Excellence</h4>
-                    <p>Scoring 94.6% on AIME 2025 without tools, GPT-5 demonstrates PhD-level mathematical reasoning and problem-solving capabilities.</p>
-                </div>
-                
-                <div class="capability-item">
-                    <h4>Multimodal Understanding</h4>
-                    <p>With 84.2% performance on MMMU, GPT-5 seamlessly processes text, images, and complex visual information with human-level comprehension.</p>
-                </div>
-                
-                <div class="capability-item">
-                    <h4>Reduced Hallucinations</h4>
-                    <p>45% less likely to contain factual errors than GPT-4o, and when thinking, 80% less likely to hallucinate than OpenAI o3.</p>
-                </div>
-                
-                <div class="capability-item">
-                    <h4>Natural Interaction</h4>
-                    <p>Less effusively agreeable, fewer unnecessary emojis, more subtle and thoughtful—like chatting with a helpful friend with PhD-level intelligence.</p>
-                </div>
-            </div>
-        </section>
+      <!-- LOGIN VIEW -->
+      <section id="loginView">
+        <div class="route-title">Login to Chat with Mert</div>
+        <form class="login" id="loginForm">
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" type="email" placeholder="user@demo.com" required />
+          </div>
+          <div class="field">
+            <label for="password">Password</label>
+            <input id="password" type="password" placeholder="demo123" required />
+          </div>
+          <button class="primary" type="submit">Login</button>
+          <div id="loginError" class="error hidden">Invalid email or password.</div>
+          <div class="hint">Demo account: <b>user@demo.com</b> / <b>demo123</b></div>
+        </form>
+      </section>
 
-        <section id="demos" class="section" style="display: none;">
-            <h2>Live Demonstrations</h2>
-            <p>During OpenAI's August 7, 2025 livestream, GPT-5 showcased abilities that would have been unimaginable just months ago.</p>
-            
-            <div class="demo-highlight">
-                <p><strong>French Learning App:</strong> In just 14 seconds of thinking, GPT-5 generated hundreds of lines of code to create a complete French learning web app with flashcards, quizzes, and interactive games—work that would typically take a software developer several hours.</p>
-            </div>
-            
-            <h3>Key Demonstrations</h3>
-            <div class="capabilities-grid">
-                <div class="capability-item">
-                    <h4>Instant Web Development</h4>
-                    <p>Created a fully functional "French Playground" web app with interactive elements, clean UI design, and educational games in under 5 minutes.</p>
-                </div>
-                
-                <div class="capability-item">
-                    <h4>Game Creation</h4>
-                    <p>Built simple but engaging games including a castle environment with NPCs you can chat with while trying to pop balloons, complete with sound effects.</p>
-                </div>
-                
-                <div class="capability-item">
-                    <h4>UI/UX Excellence</h4>
-                    <p>Designed clean, functional interfaces in React and Tailwind, understanding aesthetic principles with minimal prompting.</p>
-                </div>
-            </div>
-            
-            <div class="demo-highlight">
-                <p><strong>CEO Sam Altman's Take:</strong> "The speed of GPT-5 is psychologically disorienting; so fast it makes you question whether it's thinking at all. It just knows when to think. It delivers profound responses at astonishing speed."</p>
-            </div>
-        </section>
-
-        <section id="performance" class="section" style="display: none;">
-            <h2>Performance Metrics</h2>
-            <p>GPT-5's performance represents breakthrough achievements across every measurable domain, setting new standards for AI capability.</p>
-            
-            <div class="stats">
-                <div class="stat-item">
-                    <span class="stat-number">94.6%</span>
-                    <span class="stat-label">AIME 2025 Mathematics</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number">74.9%</span>
-                    <span class="stat-label">SWE-bench Verified</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number">88%</span>
-                    <span class="stat-label">Aider Polyglot Coding</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number">84.2%</span>
-                    <span class="stat-label">MMMU Multimodal</span>
-                </div>
-            </div>
-            
-            <h3>Efficiency Breakthrough</h3>
-            <p>GPT-5 with thinking performs better than OpenAI o3 with 50-80% fewer output tokens across all capabilities, including visual reasoning, agentic coding, and graduate-level scientific problem solving.</p>
-            
-            <h3>Pricing Innovation</h3>
-            <p>With aggressively competitive pricing at $1.25/million for input and $10/million for output, GPT-5 makes advanced AI accessible to developers and organizations of all sizes.</p>
-        </section>
-
-        </section>
-
-        <!-- Login Section -->
-        <section id="login" class="section login-section" style="display: block;">
-            <div class="login-container">
-                <h2>Login to Chat with Mert</h2>
-                <p>Choose your preferred login method to start chatting:</p>
-                
-                <div class="login-buttons">
-                    <button onclick="signInWithGoogle()" class="login-btn google-btn">
-                        <svg width="20" height="20" viewBox="0 0 24 24">
-                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                        </svg>
-                        Continue with Google
-                    </button>
-                    
-                    <button onclick="signInWithGitHub()" class="login-btn github-btn">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                        </svg>
-                        Continue with GitHub
-                    </button>
-                </div>
-            </div>
-        </section>
-
-
-        <section id="company" class="section company-info" style="display: none;">
-            <h2>About OpenAI</h2>
-            <p>Founded in December 2015, OpenAI has evolved from a visionary non-profit into the world's leading artificial intelligence organization, driving the ongoing AI revolution with groundbreaking models like ChatGPT, DALL-E, and now GPT-5.</p>
-            
-            <h3>Mission & Vision</h3>
-            <p>OpenAI's mission is to ensure that artificial general intelligence (AGI)—AI systems that are generally smarter than humans—benefits all of humanity. Their primary fiduciary duty is to humanity itself.</p>
-            
-            <h3>Leadership & Founders</h3>
-            <p>Led by CEO Sam Altman and Co-Founder & President Greg Brockman, OpenAI was founded by a consortium of visionary researchers and entrepreneurs:</p>
-            
-            <div class="founders-list">
-                <span class="founder">Sam Altman</span>
-                <span class="founder">Greg Brockman</span>
-                <span class="founder">Ilya Sutskever</span>
-                <span class="founder">John Schulman</span>
-                <span class="founder">Andrej Karpathy</span>
-                <span class="founder">Wojciech Zaremba</span>
-                <span class="founder">Durk Kingma</span>
-                <span class="founder">Trevor Blackwell</span>
-                <span class="founder">Pamela Vagata</span>
-                <span class="founder">Vicki Cheung</span>
-            </div>
-            
-            <h3>2025 Evolution</h3>
-            <p>As OpenAI enters 2025, the organization is transforming from a lab and startup into an enduring company. They're evolving their structure into a Delaware Public Benefit Corporation while maintaining their core mission to build safe AGI that benefits humanity.</p>
-            
-            <div class="stats">
-                <div class="stat-item">
-                    <span class="stat-number">$57.9B</span>
-                    <span class="stat-label">Total Funding Raised</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number">280</span>
-                    <span class="stat-label">Team Members</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number">2015</span>
-                    <span class="stat-label">Founded</span>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <!-- Login Page -->
-    <div class="login-page">
-        <div class="login-container">
-            <div class="login-card">
-                <h1>Login to Chat with Mert</h1>
-                <p class="login-description">
-                    Sign in to start chatting with Mert, an AI researcher and tech entrepreneur from Istanbul.
-                </p>
-                
-                <div class="login-buttons">
-                    <button onclick="signInWithGoogle()" class="login-btn google-btn">
-                        <svg width="20" height="20" viewBox="0 0 24 24">
-                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                        </svg>
-                        Continue with Google
-                    </button>
-                    
-                    <button onclick="signInWithGithub()" class="login-btn github-btn">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
-                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                        </svg>
-                        Continue with GitHub
-                    </button>
-                </div>
-                
-                <div class="login-footer">
-                    <a href="#" onclick="navigate('/')">← Back to Home</a>
-                </div>
-            </div>
+      <!-- CHAT VIEW -->
+      <section id="chatView" class="hidden">
+        <div class="route-title">Chat with Mert (AI Researcher from Istanbul)</div>
+        <div class="chat">
+          <div id="messages" class="messages"></div>
+          <form id="composer" class="composer">
+            <textarea id="userInput" placeholder="Type your message..." required></textarea>
+            <button class="primary" type="submit">Send</button>
+          </form>
         </div>
+      </section>
     </div>
+  </div>
 
-    <!-- Chat Page -->
-    <div class="chat-page">
-        <div class="chat-container">
-            <div class="chat-header">
-                <div class="chat-title">
-                    <h2>Chat with Mert</h2>
-                    <p class="chat-subtitle">AI researcher and tech entrepreneur from Istanbul</p>
-                </div>
-                <div class="chat-actions">
-                    <button onclick="newChat()" class="new-chat-btn">New Chat</button>
-                    <a href="#" onclick="navigate('/')" class="back-home">← Home</a>
-                </div>
-            </div>
-            
-            <div class="chat-messages" id="chat-messages">
-                <div class="message assistant-message">
-                    <div class="message-avatar">
-                        <div class="avatar">M</div>
-                    </div>
-                    <div class="message-content">
-                        <div class="message-text">
-                            Merhaba! I'm Mert, a former OpenAI researcher who now runs Yapay Zeka Labs in Istanbul. 
-                            I'd love to chat about AI, technology, startups, or anything else you're curious about. 
-                            What brings you here today?
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="chat-input-container">
-                <div class="chat-input">
-                    <textarea 
-                        id="message-input" 
-                        placeholder="Type your message to Mert..."
-                        rows="1"
-                    ></textarea>
-                    <button onclick="sendMessage()" id="send-btn" class="send-btn">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
+  <script>
+    /***************
+     * MOCK STORE  *
+     ***************/
+    const MOCK_USERS = [
+      { id: "u1", email: "user@demo.com", password: "demo123", name: "Demo User" }
+    ];
+    const SESSION_KEY = "mock_session";
 
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-functions-compat.js"></script>
+    /***************
+     * SIMPLE SPA  *
+     ***************/
+    const loginView = document.getElementById("loginView");
+    const chatView  = document.getElementById("chatView");
+    const toLogin   = document.getElementById("toLogin");
+    const toChat    = document.getElementById("toChat");
+    const logoutBtn = document.getElementById("logoutBtn");
 
-    <script>
-        // Mock authentication system
-        let currentUser = null;
-        let conversations = [];
+    function isAuthed(){
+      try{ return !!JSON.parse(localStorage.getItem(SESSION_KEY)); }
+      catch{ return false; }
+    }
+    function setAuthed(user){ localStorage.setItem(SESSION_KEY, JSON.stringify(user)); }
+    function clearAuth(){ localStorage.removeItem(SESSION_KEY); }
 
-        // Mock user authentication functions
-        async function signInWithGoogle() {
-            const mockUser = {
-                uid: 'mock_google_user_123',
-                email: 'user@gmail.com',
-                displayName: 'Google User',
-                photoURL: 'https://lh3.googleusercontent.com/a/default-user=s96-c'
-            };
-            currentUser = mockUser;
-            updateNavigation();
-            navigate('chat');
-        }
-        
-        async function signInWithGitHub() {
-            const mockUser = {
-                uid: 'mock_github_user_456',
-                email: 'user@github.com', 
-                displayName: 'GitHub User',
-                photoURL: 'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png'
-            };
-            currentUser = mockUser;
-            updateNavigation();
-            navigate('chat');
-        }
-        
-        function signOut() {
-            currentUser = null;
-            conversations = [];
-            document.getElementById('chatMessages').innerHTML = '';
-            updateNavigation();
-            navigate('');
-        }
-        
-        function updateNavigation() {
-            const mainNav = document.getElementById('mainNav');
-            const userNav = document.getElementById('userNav');
-            
-            if (currentUser) {
-                mainNav.style.display = 'none';
-                userNav.style.display = 'flex';
-                document.getElementById('userName').textContent = currentUser.displayName;
-                document.getElementById('userPhoto').src = currentUser.photoURL;
-            } else {
-                mainNav.style.display = 'flex';
-                userNav.style.display = 'none';
-            }
-        }
-        
-        // Chat functions
-        async function sendMessage() {
-            const input = document.getElementById('messageInput');
-            const message = input.value.trim();
-            
-            if (!message) return;
-            
-            // Add user message to chat
-            addMessage(message, 'user');
-            input.value = '';
-            
-            // Show typing indicator
-            showTypingIndicator();
-            
-            // Simulate AI response delay
-            setTimeout(() => {
-                hideTypingIndicator();
-                const response = generateResponse(message);
-                addMessage(response, 'assistant');
-            }, 1000 + Math.random() * 2000);
-        }
-        
-        function generateResponse(message) {
-            const lowerMessage = message.toLowerCase();
-            
-            if (lowerMessage === 'hey' || lowerMessage === 'hi' || lowerMessage === 'hello') {
-                return "Merhaba! Great to see you here! I'm Mert, a former OpenAI researcher turned entrepreneur. I spent three incredible years in San Francisco working on GPT-4 optimization before returning to Istanbul to start Yapay Zeka Labs. What brings you here today? I'd love to hear what you're curious about!";
-            } else if (lowerMessage.includes('tell me about gpt') && lowerMessage.includes('5')) {
-                return "Ah, GPT-5! *adjusts glasses excitedly* Having worked on GPT-4 optimization at OpenAI, I can tell you GPT-5 is truly revolutionary. Launched in August 2025, it's not just an upgrade—it's a quantum leap. The built-in reasoning capabilities are phenomenal, deciding when to think step-by-step vs. answering instantly. We're seeing 88% on SWE-bench, 84.2% on MMMU multimodal tasks... and the efficiency! 50-80% fewer tokens than o3 while performing better. At $1.25/million input tokens, it's making advanced AI accessible to everyone. İnşallah, this will democratize AI development globally! What specific aspect interests you most?";
-            } else if (lowerMessage.includes('istanbul') || lowerMessage.includes('turkey') || lowerMessage.includes('turkish')) {
-                return "Istanbul is amazing for tech! Since returning from San Francisco, I've been blown away by the growing Turkish AI ecosystem. We have incredible talent here, and the bridge between European and Asian markets is perfect for global AI applications. At Yapay Zeka Labs, we're working on Turkish-specific language models and cross-cultural AI solutions. The startup scene in Levent and Maslak is really taking off. Are you involved in the Turkish tech scene too?";
-            } else if (lowerMessage.includes('openai') || lowerMessage.includes('san francisco')) {
-                return "My time at OpenAI was transformative! Working in San Francisco from 2022-2024, I was part of the team optimizing GPT-4's performance and efficiency. The pace of innovation there is incredible—every day felt like we were pushing the boundaries of what's possible. The collaboration between research and engineering teams taught me so much about scaling AI systems. Now I'm applying those lessons here in Istanbul, but with a focus on ethical AI and global accessibility. What aspects of OpenAI's work interest you most?";
-            } else if (lowerMessage.includes('ai safety') || lowerMessage.includes('alignment') || lowerMessage.includes('ethics')) {
-                return "AI safety is absolutely crucial—it's one of the core reasons I started Yapay Zeka Labs. During my OpenAI days, I saw firsthand how important alignment and safety measures are as models become more powerful. We need to ensure AI benefits everyone, not just a few. Here in Turkey, I'm particularly focused on cultural alignment—making sure AI systems understand and respect different cultural contexts. The global nature of AI means we need diverse perspectives in safety research. What are your thoughts on the current state of AI safety?";
-            } else if (lowerMessage.includes('startup') || lowerMessage.includes('entrepreneur') || lowerMessage.includes('business')) {
-                return "Transitioning from researcher to entrepreneur has been quite the journey! After seeing the potential of AI at OpenAI, I knew I wanted to build something that could have real-world impact. Yapay Zeka Labs focuses on making advanced AI accessible and culturally aware. The Turkish market is perfect for this—we're at the crossroads of so many cultures and languages. Plus, the government's support for tech startups has been encouraging. The hardest part? Balancing technical innovation with business needs. But it's incredibly rewarding! Are you thinking about starting something in AI?";
-            } else {
-                const responses = [
-                    "That's a fascinating question! As someone who's worked on both the research and application sides of AI, I find these kinds of discussions really engaging. What's your take on this?",
-                    "Interesting perspective! From my experience at OpenAI and now running Yapay Zeka Labs, I've learned that the most important insights often come from asking the right questions. Can you tell me more about what sparked this thought?",
-                    "You know, working between San Francisco and Istanbul has given me a unique view on global AI development. This reminds me of discussions we used to have in the OpenAI offices. What's driving your interest in this area?",
-                    "Great point! AI development is moving so fast these days. Between my research background and current work in Istanbul's growing tech scene, I'm always curious about different perspectives. What would you like to explore further?"
-                ];
-                return responses[Math.floor(Math.random() * responses.length)];
-            }
-        }
-        
-        function addMessage(content, role) {
-            const messagesContainer = document.getElementById('chatMessages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${role}`;
-            messageDiv.textContent = content;
-            messagesContainer.appendChild(messageDiv);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
-        
-        function showTypingIndicator() {
-            const messagesContainer = document.getElementById('chatMessages');
-            const typingDiv = document.createElement('div');
-            typingDiv.className = 'typing-indicator';
-            typingDiv.id = 'typingIndicator';
-            typingDiv.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
-            messagesContainer.appendChild(typingDiv);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
-        
-        function hideTypingIndicator() {
-            const typingIndicator = document.getElementById('typingIndicator');
-            if (typingIndicator) {
-                typingIndicator.remove();
-            }
-        }
-        
-        function handleKeyPress(event) {
-            if (event.key === 'Enter') {
-                sendMessage();
-            }
-        }
-        
-        // Navigation system
-        function navigate(section) {
-            // Hide all sections
-            document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
-            document.querySelector('.container').style.display = 'none';
-            
-            if (section === 'chat') {
-                document.getElementById('chat').style.display = 'flex';
-            } else if (section === 'login') {
-                document.getElementById('login').style.display = 'block';
-            } else {
-                // Show main page
-                document.querySelector('.container').style.display = 'block';
-                document.getElementById('capabilities').style.display = 'block';
-                document.getElementById('demos').style.display = 'block';
-                document.getElementById('performance').style.display = 'block';
-                document.getElementById('company').style.display = 'block';
-            }
-        }
+    function route(){
+      const hash = location.hash || "#/login";
+      if(hash.startsWith("#/chat")){
+        if(!isAuthed()){ location.hash="#/login"; return; }
+        loginView.classList.add("hidden");
+        chatView.classList.remove("hidden");
+        logoutBtn.classList.remove("hidden");
+      }else{
+        loginView.classList.remove("hidden");
+        chatView.classList.add("hidden");
+        logoutBtn.classList.toggle("hidden", !isAuthed());
+      }
+    }
+    window.addEventListener("hashchange", route);
 
-        // Page initialization
-        document.addEventListener('DOMContentLoaded', function() {
-            // Add navigation click handlers
-            document.querySelectorAll('.nav-heading').forEach(heading => {
-                heading.addEventListener('click', function() {
-                    const target = this.getAttribute('data-target');
-                    if (target === 'login') {
-                        navigate('login');
-                    } else if (target === 'chat') {
-                        navigate('chat');
-                    } else if (target) {
-                        // Smooth scroll to section
-                        const targetSection = document.getElementById(target);
-                        if (targetSection) {
-                            targetSection.scrollIntoView({ behavior: 'smooth' });
-                        }
-                    }
-                });
-            });
-            
-            // Initialize navigation state
-            updateNavigation();
-        });
-    </script>
+    toLogin.onclick = ()=> location.hash="#/login";
+    toChat.onclick  = ()=> location.hash="#/chat";
+    logoutBtn.onclick = ()=>{ clearAuth(); route(); };
+
+    /****************
+     * LOGIN LOGIC  *
+     ****************/
+    const loginForm  = document.getElementById("loginForm");
+    const loginError = document.getElementById("loginError");
+    loginForm?.addEventListener("submit", (e)=>{
+      e.preventDefault();
+      const email = document.getElementById("email").value.trim().toLowerCase();
+      const pass  = document.getElementById("password").value;
+      const user  = MOCK_USERS.find(u=>u.email===email && u.password===pass);
+      if(!user){
+        loginError.classList.remove("hidden");
+        return;
+      }
+      loginError.classList.add("hidden");
+      setAuthed({ id:user.id, email:user.email, name:user.name, at: Date.now() });
+      location.hash="#/chat";
+    });
+
+    /****************
+     * CHAT LOGIC   *
+     ****************/
+    const messagesEl = document.getElementById("messages");
+    const composer   = document.getElementById("composer");
+    const inputEl    = document.getElementById("userInput");
+
+    const history = []; // {who:"user"|"ai", text:string}
+
+    function addMsg(who, text){
+      history.push({who, text});
+      const el = document.createElement("div");
+      el.className = "msg " + (who==="user" ? "user":"ai");
+      el.innerHTML = `<div class="who">${who==="user"?"You":"Mert (AI)"}</div><div class="text">${escapeHtml(text)}</div>`;
+      messagesEl.appendChild(el);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+
+    function showTyping(){
+      const el = document.createElement("div");
+      el.className = "msg ai";
+      el.id = "typing";
+      el.innerHTML = `<div class="who">Mert (AI)</div><div class="text"><span class="typing"></span></div>`;
+      messagesEl.appendChild(el);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+
+    function replaceTypingWith(text){
+      const t = document.getElementById("typing");
+      if(!t){ addMsg("ai", text); return; }
+      t.querySelector(".text").textContent = text;
+      t.removeAttribute("id");
+    }
+
+    composer.addEventListener("submit", (e)=>{
+      e.preventDefault();
+      const msg = inputEl.value.trim();
+      if(!msg) return;
+      addMsg("user", msg);
+      inputEl.value="";
+      showTyping();
+      // Simulate AI response delay
+      setTimeout(()=>{
+        const reply = generateMertResponse(msg, history);
+        replaceTypingWith(reply);
+      }, 800 + Math.random()*1200);
+    });
+
+    function generateMertResponse(userMsg, hist){
+      const m = userMsg.toLowerCase();
+
+      // Specific responses you requested
+      if(/\b(hey|hi|hello|merhaba|selam)\b/.test(m)){
+        return "Merhaba! Great to see you here! I'm Mert, a former OpenAI researcher turned entrepreneur. I spent three incredible years in San Francisco working on GPT-4 optimization before returning to Istanbul to start Yapay Zeka Labs. What brings you here today? I'd love to hear what you're curious about!";
+      }
+      
+      if(m.includes('tell me about gpt') && m.includes('5')){
+        return "Ah, GPT-5! *adjusts glasses excitedly* Having worked on GPT-4 optimization at OpenAI, I can tell you GPT-5 is truly revolutionary. Launched in August 2025, it's not just an upgrade—it's a quantum leap. The built-in reasoning capabilities are phenomenal, deciding when to think step-by-step vs. answering instantly. We're seeing 88% on SWE-bench, 84.2% on MMMU multimodal tasks... and the efficiency! 50-80% fewer tokens than o3 while performing better. At $1.25/million input tokens, it's making advanced AI accessible to everyone. İnşallah, this will democratize AI development globally! What specific aspect interests you most?";
+      }
+
+      if(m.includes('istanbul') || m.includes('turkey') || m.includes('turkish')){
+        return "Istanbul is amazing for tech! Since returning from San Francisco, I've been blown away by the growing Turkish AI ecosystem. We have incredible talent here, and the bridge between European and Asian markets is perfect for global AI applications. At Yapay Zeka Labs, we're working on Turkish-specific language models and cross-cultural AI solutions. The startup scene in Levent and Maslak is really taking off. Are you involved in the Turkish tech scene too?";
+      }
+
+      if(m.includes('openai') || m.includes('san francisco')){
+        return "My time at OpenAI was transformative! Working in San Francisco from 2022-2024, I was part of the team optimizing GPT-4's performance and efficiency. The pace of innovation there is incredible—every day felt like we were pushing the boundaries of what's possible. The collaboration between research and engineering teams taught me so much about scaling AI systems. Now I'm applying those lessons here in Istanbul, but with a focus on ethical AI and global accessibility. What aspects of OpenAI's work interest you most?";
+      }
+
+      if(m.includes('ai safety') || m.includes('alignment') || m.includes('ethics')){
+        return "AI safety is absolutely crucial—it's one of the core reasons I started Yapay Zeka Labs. During my OpenAI days, I saw firsthand how important alignment and safety measures are as models become more powerful. We need to ensure AI benefits everyone, not just a few. Here in Turkey, I'm particularly focused on cultural alignment—making sure AI systems understand and respect different cultural contexts. The global nature of AI means we need diverse perspectives in safety research. What are your thoughts on the current state of AI safety?";
+      }
+
+      if(m.includes('startup') || m.includes('entrepreneur') || m.includes('business')){
+        return "Transitioning from researcher to entrepreneur has been quite the journey! After seeing the potential of AI at OpenAI, I knew I wanted to build something that could have real-world impact. Yapay Zeka Labs focuses on making advanced AI accessible and culturally aware. The Turkish market is perfect for this—we're at the crossroads of so many cultures and languages. Plus, the government's support for tech startups has been encouraging. The hardest part? Balancing technical innovation with business needs. But it's incredibly rewarding! Are you thinking about starting something in AI?";
+      }
+
+      // Default responses
+      const defaultResponses = [
+        "That's a fascinating question! As someone who's worked on both the research and application sides of AI, I find these kinds of discussions really engaging. What's your take on this?",
+        "Interesting perspective! From my experience at OpenAI and now running Yapay Zeka Labs, I've learned that the most important insights often come from asking the right questions. Can you tell me more about what sparked this thought?",
+        "You know, working between San Francisco and Istanbul has given me a unique view on global AI development. This reminds me of discussions we used to have in the OpenAI offices. What's driving your interest in this area?",
+        "Great point! AI development is moving so fast these days. Between my research background and current work in Istanbul's growing tech scene, I'm always curious about different perspectives. What would you like to explore further?"
+      ];
+      
+      return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
+    }
+
+    function escapeHtml(s){
+      return s.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+    }
+
+    // Initialize on page load
+    route();
+
+    // Auto-redirect to chat if already logged in
+    if(isAuthed()){
+      setTimeout(()=>{ location.hash = "#/chat"; }, 0);
+    }
+  </script>
 </body>
 </html>

@@ -219,11 +219,6 @@
             color: #555;
         }
 
-        /* Smooth scroll behavior */
-        html {
-            scroll-behavior: smooth;
-        }
-
         /* User Navigation Styles */
         .user-nav {
             position: absolute;
@@ -259,6 +254,10 @@
         }
         
         /* Login Page Styles */
+        .login-page {
+            display: none;
+        }
+        
         .login-container {
             display: flex;
             align-items: center;
@@ -336,6 +335,10 @@
         }
         
         /* Chat Page Styles */
+        .chat-page {
+            display: none;
+        }
+        
         .chat-container {
             height: 100vh;
             display: flex;
@@ -553,7 +556,7 @@
                 opacity: 1;
             }
         }
-        
+
         /* Responsive design */
         @media (max-width: 768px) {
             .container {
@@ -590,6 +593,11 @@
             .chat-input-container {
                 padding: 15px 20px;
             }
+        }
+
+        /* Smooth scroll behavior */
+        html {
+            scroll-behavior: smooth;
         }
     </style>
 </head>
@@ -751,7 +759,380 @@
         </section>
     </div>
 
+    <!-- Login Page -->
+    <div class="login-page">
+        <div class="login-container">
+            <div class="login-card">
+                <h1>Login to Chat with Mert</h1>
+                <p class="login-description">
+                    Sign in to start chatting with Mert, an AI researcher and tech entrepreneur from Istanbul.
+                </p>
+                
+                <div class="login-buttons">
+                    <button onclick="signInWithGoogle()" class="login-btn google-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24">
+                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                        </svg>
+                        Continue with Google
+                    </button>
+                    
+                    <button onclick="signInWithGithub()" class="login-btn github-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                        Continue with GitHub
+                    </button>
+                </div>
+                
+                <div class="login-footer">
+                    <a href="#" onclick="navigate('/')">← Back to Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Page -->
+    <div class="chat-page">
+        <div class="chat-container">
+            <div class="chat-header">
+                <div class="chat-title">
+                    <h2>Chat with Mert</h2>
+                    <p class="chat-subtitle">AI researcher and tech entrepreneur from Istanbul</p>
+                </div>
+                <div class="chat-actions">
+                    <button onclick="newChat()" class="new-chat-btn">New Chat</button>
+                    <a href="#" onclick="navigate('/')" class="back-home">← Home</a>
+                </div>
+            </div>
+            
+            <div class="chat-messages" id="chat-messages">
+                <div class="message assistant-message">
+                    <div class="message-avatar">
+                        <div class="avatar">M</div>
+                    </div>
+                    <div class="message-content">
+                        <div class="message-text">
+                            Merhaba! I'm Mert, a former OpenAI researcher who now runs Yapay Zeka Labs in Istanbul. 
+                            I'd love to chat about AI, technology, startups, or anything else you're curious about. 
+                            What brings you here today?
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chat-input-container">
+                <div class="chat-input">
+                    <textarea 
+                        id="message-input" 
+                        placeholder="Type your message to Mert..."
+                        rows="1"
+                    ></textarea>
+                    <button onclick="sendMessage()" id="send-btn" class="send-btn">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-functions-compat.js"></script>
+
     <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBNqnUokM-PYOY8BHPLRY-4Rw1tmH5H2To",
+            authDomain: "mert-s-app-55d6c.firebaseapp.com",
+            projectId: "mert-s-app-55d6c",
+            storageBucket: "mert-s-app-55d6c.firebasestorage.app",
+            messagingSenderId: "826830569006",
+            appId: "1:826830569006:web:625791f2cf6e2e4eace9bf",
+            measurementId: "G-WEYK0V0LL9"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        const functions = firebase.functions();
+
+        // Global variables
+        let currentUser = null;
+
+        // Router functionality
+        function navigate(path) {
+            window.history.pushState({}, '', path);
+            handleRoute();
+        }
+
+        function handleRoute() {
+            const path = window.location.pathname;
+            
+            if (path === '/login') {
+                showLogin();
+            } else if (path === '/chat') {
+                showChat();
+            } else {
+                showHome();
+            }
+        }
+
+        function showHome() {
+            document.title = 'GPT-5 - Just the Most';
+            document.querySelector('.container').style.display = 'block';
+            document.querySelector('.login-page').style.display = 'none';
+            document.querySelector('.chat-page').style.display = 'none';
+        }
+
+        function showLogin() {
+            if (currentUser) {
+                navigate('/chat');
+                return;
+            }
+            
+            document.title = 'Login - GPT-5';
+            document.querySelector('.container').style.display = 'none';
+            document.querySelector('.login-page').style.display = 'block';
+            document.querySelector('.chat-page').style.display = 'none';
+        }
+
+        function showChat() {
+            if (!currentUser) {
+                navigate('/login');
+                return;
+            }
+            
+            document.title = 'Chat with Mert - GPT-5';
+            document.querySelector('.container').style.display = 'none';
+            document.querySelector('.login-page').style.display = 'none';
+            document.querySelector('.chat-page').style.display = 'block';
+        }
+
+        // Authentication functions
+        async function signInWithGoogle() {
+            try {
+                const provider = new firebase.auth.GoogleAuthProvider();
+                await auth.signInWithPopup(provider);
+                navigate('/chat');
+            } catch (error) {
+                console.error('Google sign in error:', error);
+                alert('Sign in failed. Please try again.');
+            }
+        }
+
+        async function signInWithGithub() {
+            try {
+                const provider = new firebase.auth.GithubAuthProvider();
+                await auth.signInWithPopup(provider);
+                navigate('/chat');
+            } catch (error) {
+                console.error('GitHub sign in error:', error);
+                alert('Sign in failed. Please try again.');
+            }
+        }
+
+        async function signOut() {
+            try {
+                await auth.signOut();
+                navigate('/');
+            } catch (error) {
+                console.error('Sign out error:', error);
+            }
+        }
+
+        // Chat functions
+        function addMessage(role, content) {
+            const messagesContainer = document.getElementById('chat-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${role}-message`;
+            
+            const avatar = role === 'assistant' 
+                ? '<div class="avatar">M</div>' 
+                : `<div class="avatar user-avatar"><img src="${currentUser?.photoURL || '/default-avatar.png'}" alt="User"></div>`;
+                
+            messageDiv.innerHTML = `
+                <div class="message-avatar">
+                    ${avatar}
+                </div>
+                <div class="message-content">
+                    <div class="message-text">${formatMessage(content)}</div>
+                    <div class="message-time">${new Date().toLocaleTimeString()}</div>
+                </div>
+            `;
+            
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function formatMessage(content) {
+            return content
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                .replace(/\n/g, '<br>');
+        }
+
+        function showTyping() {
+            const messagesContainer = document.getElementById('chat-messages');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message assistant-message typing-message';
+            typingDiv.id = 'typing-' + Date.now();
+            
+            typingDiv.innerHTML = `
+                <div class="message-avatar">
+                    <div class="avatar">M</div>
+                </div>
+                <div class="message-content">
+                    <div class="typing-indicator">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            `;
+            
+            messagesContainer.appendChild(typingDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            
+            return typingDiv.id;
+        }
+
+        function hideTyping(typingId) {
+            const typingElement = document.getElementById(typingId);
+            if (typingElement) {
+                typingElement.remove();
+            }
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('message-input');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            // Add user message to chat
+            addMessage('user', message);
+            input.value = '';
+            
+            // Show typing indicator
+            const typingId = showTyping();
+            
+            try {
+                // For now, simulate Mert's response since Firebase Functions aren't deployed yet
+                setTimeout(() => {
+                    hideTyping(typingId);
+                    
+                    // Simulated Mert responses
+                    const responses = [
+                        "Merhaba! That's a fascinating question. As someone who worked on GPT-4 optimization at OpenAI, I've seen how these models can surprise even their creators. What specific aspect interests you most?",
+                        "İnşallah, we'll see amazing developments in AI safety in the coming years. At Yapay Zeka Labs, we're working on making AI more aligned with human values. Have you thought about the ethical implications?",
+                        "That reminds me of a conversation I had with Sam Altman back in San Francisco. The Turkish tech scene is really growing too - Istanbul has some incredible AI startups now. Are you involved in tech yourself?",
+                        "Great point! In my experience, both at OpenAI and now running my own company, the key is balancing innovation with responsibility. What challenges are you facing in your work?",
+                        "Exactly! The transformer architecture really changed everything. When we were optimizing GPT-4, we discovered so many interesting patterns. Would you like to dive deeper into the technical details?"
+                    ];
+                    
+                    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                    addMessage('assistant', randomResponse);
+                }, 2000);
+                
+            } catch (error) {
+                console.error('Chat error:', error);
+                hideTyping(typingId);
+                addMessage('assistant', 'Sorry, I encountered an error. Please try again.');
+            }
+        }
+
+        function newChat() {
+            const messagesContainer = document.getElementById('chat-messages');
+            messagesContainer.innerHTML = `
+                <div class="message assistant-message">
+                    <div class="message-avatar">
+                        <div class="avatar">M</div>
+                    </div>
+                    <div class="message-content">
+                        <div class="message-text">
+                            Merhaba again! Ready for a new conversation? What would you like to explore today?
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function updateNavigation() {
+            const navigation = document.querySelector('.navigation');
+            let userNav = document.querySelector('.user-nav');
+            
+            if (currentUser) {
+                // Add Chat with Mert link
+                if (!document.querySelector('.chat-nav-link')) {
+                    const chatLink = document.createElement('div');
+                    chatLink.className = 'nav-heading chat-nav-link';
+                    chatLink.textContent = 'Chat with Mert';
+                    chatLink.onclick = () => navigate('/chat');
+                    navigation.appendChild(chatLink);
+                }
+                
+                // Update user navigation
+                if (!userNav) {
+                    userNav = document.createElement('div');
+                    userNav.className = 'user-nav';
+                    document.querySelector('.container').prepend(userNav);
+                }
+                
+                userNav.innerHTML = `
+                    <div class="user-info">
+                        <img src="${currentUser.photoURL || '/default-avatar.png'}" alt="User" class="user-avatar">
+                        <span>${currentUser.displayName || currentUser.email}</span>
+                        <button onclick="signOut()" class="logout-btn">Logout</button>
+                    </div>
+                `;
+            } else {
+                // Remove chat link and user nav when logged out
+                const chatLink = document.querySelector('.chat-nav-link');
+                if (chatLink) chatLink.remove();
+                
+                if (userNav) userNav.remove();
+            }
+        }
+
+        // Initialize auth state listener
+        auth.onAuthStateChanged((user) => {
+            currentUser = user;
+            updateNavigation();
+            
+            // Redirect if trying to access protected route without auth
+            if (!user && window.location.pathname === '/chat') {
+                navigate('/login');
+            }
+        });
+
+        // Auto-resize textarea
+        document.addEventListener('input', (e) => {
+            if (e.target.id === 'message-input') {
+                e.target.style.height = 'auto';
+                e.target.style.height = e.target.scrollHeight + 'px';
+            }
+        });
+
+        // Send message on Enter (but not Shift+Enter)
+        document.addEventListener('keydown', (e) => {
+            if (e.target.id === 'message-input' && e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                document.getElementById('send-btn').click();
+            }
+        });
+
+        // Handle browser navigation
+        window.addEventListener('popstate', handleRoute);
+
+        // Original navigation functionality
         document.addEventListener('DOMContentLoaded', function() {
             const navHeadings = document.querySelectorAll('.nav-heading');
             const sections = document.querySelectorAll('.section');
@@ -760,6 +1141,11 @@
             navHeadings.forEach(heading => {
                 heading.addEventListener('click', function(e) {
                     e.preventDefault();
+                    
+                    // Skip if it's the chat link
+                    if (this.classList.contains('chat-nav-link')) {
+                        return;
+                    }
                     
                     // Add click animation
                     this.style.transform = 'scale(0.95)';
@@ -805,13 +1191,10 @@
             if (sections.length > 0) {
                 sections[0].classList.add('active');
             }
+
+            // Initialize router
+            handleRoute();
         });
     </script>
-    
-    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
-    <script type="module" src="./firebase-config.js"></script>
-    
-    <!-- App JavaScript -->
-    <script type="module" src="./app.js"></script>
 </body>
 </html>
